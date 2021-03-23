@@ -6,7 +6,6 @@ Source code and instructions: https://git.ligo.org/gwinc/pygwinc
 
 Install pyGWINC via:
 pip install inspiral_range
-pip install inspiral_range
 
 Source code and instructions: https://git.ligo.org/gwinc/inspiral-range
 
