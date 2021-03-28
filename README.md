@@ -1,4 +1,5 @@
 To use this package for plotting noise budgets for Einstein Telescope one needs a working installation of Python, a PyGWINC and an inspiral-range packages installed.
+
 To install PyGWINC:
 [Option 1:] Run the folloing command:
 pip install gwinc 
