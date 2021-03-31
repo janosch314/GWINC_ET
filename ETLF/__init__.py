@@ -43,4 +43,4 @@ class ETLF(nb.Budget):
     ]
 
     plot_style = PLOT_STYLE
-
+    freq = '1:3000:4000'
