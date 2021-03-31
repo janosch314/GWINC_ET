@@ -1,7 +1,6 @@
 from gwinc.ifo.noises import *
 from gwinc import load_budget
 import numpy as np
-from numpy.core.shape_base import _accumulate
 
 DEFAULT_FREQ = '1:3000:6000'
 
