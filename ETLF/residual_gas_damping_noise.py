@@ -19,7 +19,7 @@ def S_F_weiss(M, r, p, T, m):
     m = molecular mass of particle [kg] (default = 2.99e-26 for water)
     T= temperaure [K] (default = 300K)
     """
-    S_F = 8 * p * np.sqrt(kb*T*m) * np.pi * r**2
+    S_F = sum( 8 * p * np.sqrt(kb*T*m) * np.pi * r**2)
     return S_F
 
 
@@ -32,7 +32,7 @@ def S_F_cavalleri(M, r, p, T, m):
     m = molecular mass of particle [kg] (default = 2.99e-26 for water)
     T= temperaure [K] (default = 300K)
     """
-    S_F = p * np.sqrt((128/np.pi)*m*kb*T) * np.pi * r**2 * (1 + r/(2*r) + np.pi/4)
+    S_F = sum(p * np.sqrt((128/np.pi)*m*kb*T) * np.pi * r**2 * (1 + r/(2*r) + np.pi/4))
     return S_F
 
 def calc_x_noise(f, S_F, M):
@@ -80,14 +80,16 @@ if __name__ == "__main__":
     M_ET = 200
     r_ET = 0.31
     L_ET = 1e4
-    p_ET = 1e-10*100  # [Pa]  1e-10 mbar
-    m_H2 = 2*1.66e-27       #[kg]
+    p_ET = np.array([1e-10,1E-10,1E-12,1E-14])  # pressures for masses in [mbar]
+    p_ET = p_ET *100 # mbar --> Pa
+    m = np.array([1,2,18,45]) # atomic/molecular masses in amu
+    m = m * 2*1.66e-27       # convert umas into [kg]
     x_ET_weiss = calc_x_noise(f, \
-                           S_F_weiss(M_ET, r_ET, p_ET, T, m=m_H2)\
+                           S_F_weiss(M_ET, r_ET, p_ET, T, m)\
                            , M_ET)
     
     x_ET_cavalleri = calc_x_noise(f, \
-                           S_F_cavalleri(M_ET, r_ET, p_ET, T, m=m_H2)\
+                           S_F_cavalleri(M_ET, r_ET, p_ET, T, m)\
                            , M_ET)
     
     fig1 = plt.figure(1, figsize=(6,6))
@@ -100,7 +102,8 @@ if __name__ == "__main__":
     ax1.set_xlabel('Frequency [Hz]')
     ax1.set_ylabel(r'h [1 /$\sqrt{Hz}$]')
     #ax1.set_title('ET: H2 at {:.0e} mbar'.format(p_ET/100))
-    ax1.set_title("ET: H2 at %3.1E mbar, T = %3.0f" % ((p_ET/100),T))
+    ax1.set_title("ET strain, T = %3.0f K" % (T))
+   # ax1.set_title("ET: H2 at %3.1E mbar, T = %3.0f" % ((p_ET/100),T))
     ax1.grid(which='both')
     ax1.autoscale(enable=True, axis='both', tight=True)
     ax1.legend()
@@ -123,7 +126,8 @@ if __name__ == "__main__":
     ax2.loglog(f, 2*x_ET_cavalleri, lw=3, label='Cavalleri equation')
     ax2.set_xlabel('Frequency [Hz]')
     ax2.set_ylabel(r'Displacement noise (4 mirrors) [m /$\sqrt{Hz}$]')
-    ax2.set_title("ET displacement: H2 at %3.1E mbar, T = %3.0f" % ((p_ET/100),T))
+ #   
+    ax2.set_title("ET displacement, T = %3.0f K" % (T))
     ax2.grid(which='both')
     ax2.autoscale(enable=True, axis='both', tight=True)
     ax2.legend()
