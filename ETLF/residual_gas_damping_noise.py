@@ -19,7 +19,7 @@ def S_F_weiss(M, r, p, T, m):
     m = molecular mass of particle [kg] (default = 2.99e-26 for water)
     T= temperaure [K] (default = 300K)
     """
-    S_F = np.sqrt(sum( (8 * p * np.sqrt(kb*T*m) * np.pi * r**2)**2)) #quadratic sum of all partial pressure contributions
+    S_F = sum( 8 * p * np.sqrt(kb*T*m) * np.pi * r**2)
     return S_F
 
 
@@ -32,7 +32,7 @@ def S_F_cavalleri(M, r, p, T, m):
     m = molecular mass of particle [kg] (default = 2.99e-26 for water)
     T= temperaure [K] (default = 300K)
     """
-    S_F = np.sqrt(sum((p * np.sqrt((128/np.pi)*m*kb*T) * np.pi * r**2 * (1 + r/(2*r) + np.pi/4))**2)) #quadratic sum of all partial pressure contributions
+    S_F = sum(p * np.sqrt((128/np.pi)*m*kb*T) * np.pi * r**2 * (1 + r/(2*r) + np.pi/4))
     return S_F
 
 def calc_x_noise(f, S_F, M):
