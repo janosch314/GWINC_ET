@@ -1,8 +1,8 @@
 from numpy import sqrt, pi, sin, cos, arctan, real, imag, size, roots
 from gwinc import const
-from gwinc.ifo import ifo_power
+from gwinc.ifo.noises import ifo_power
 
-def computeFCParams(ifo, fcParams):
+def computeFCParams(ifo):
     c = const.c
     Parm = ifo_power(ifo).parm
     w0 = 2 * pi * c / ifo.Laser.Wavelength
@@ -16,44 +16,38 @@ def computeFCParams(ifo, fcParams):
     rSR = sqrt(1-Tsrm)
     zeta1 = pi/2
     zeta = arctan(
-        (-1*rSR*sin(phiSR - 1*zeta1)+sin(phiSR + zeta1)) / 
-        (rSR*cos(phiSR-zeta1)+cos(phiSR+zeta1))
+        (-1*rSR*sin(phiSR - 1*zeta1) + sin(phiSR + zeta1)) / 
+        (rSR*cos(phiSR-zeta1) + cos(phiSR+zeta1))
     )
     
     Theta = 8/c/Larm/m*w0*Parm
 
-    Lambda = c*Titm/(4*Larm)*2*rSR*sin(2*phiSR)/(1+rSR**2+2*rSR*cos(2*phiSR))
+    Lambda = c*Titm/(4*Larm)*2*rSR*sin(2*phiSR)/ \
+        (1+rSR**2+2*rSR*cos(2*phiSR))
 
-    epsilon = c*Titm/(4*Larm)*(1-rSR**2)/(1+rSR**2+2*rSR*cos(2*phiSR))
+    epsilon = c*Titm/(4*Larm)*(1-rSR**2)/ \
+        (1+rSR**2+2*rSR*cos(2*phiSR))
 
-    poly = [1,0,(epsilon+ 1j*Lambda)**2,0,Theta*(Lambda-1j*epsilon-1j*epsilon*cos(2*zeta)-epsilon*sin(2*zeta))]
-    
+    poly = [1, 0, (epsilon+1j*Lambda)**2, 0,
+            Theta*(Lambda-1j*epsilon-1j*epsilon*cos(2*zeta) - epsilon*sin(2*zeta))]
     #poly = [1,0,(epsilon+ 1j*Lambda)**2,0,Theta*(Lambda-1j*epsilon+1j*epsilon*(cos(2*zeta1)+1j*sin(2*zeta1)))]
 
     ropo = roots(poly)
+    ropo = ropo[imag(ropo) >= 0]
     
-    ns = 0
-    if isinstance(fcParams, list):
-        for n in range(size(ropo))[::-1]:
-            if imag(ropo[n]) < 0:
-                continue
-            try:
-                fcParams[ns].fdetune = -real(ropo[n])/pi/2
-                fcParams[ns].gammaFC = imag(ropo[n])/pi/2
-                fcParams[ns].Ti= 4*fcParams[ns].L*fcParams[ns].gammaFC*2*pi /c
-                ns += 1
-            except IndexError:
-                print("More roots than filter cavities!")
-                break
-    else:
-        for root in ropo[::-1]:
-            if imag(root) < 0:
-                continue
-            fcParams.fdetune = -real(root)/pi/2
-            fcParams.gammaFC = imag(root)/pi/2
-            fcParams.Ti= 4*fcParams.L * fcParams.gammaFC * 2 * pi /c
-            break
-
-
+    fcParams = ifo.Squeezer.FilterCavity
+    if not isinstance(fcParams, list) or len(fcParams) != len(ropo):
+        raise Exception(f'Exactly {len(ropo)} filter cavities must be defined.')
+    
+    for fc, root in zip(fcParams, ropo[::-1]):
+        fc.fdetune = -real(root)/pi/2
+        fc.gammaFC = imag(root)/pi/2
+        fc.Ti= 4*fc.L*fc.gammaFC*2*pi /c
+                
     return fcParams
 
+if __name__ == "__main__":
+    import gwinc
+    budget = gwinc.load_budget('../ETHF')
+    for fc in computeFCParams(budget.ifo):
+        print(fc.to_yaml())
