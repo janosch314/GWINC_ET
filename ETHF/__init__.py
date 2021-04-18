@@ -1,6 +1,8 @@
+import os
+from gwinc import nb, const
 from gwinc.ifo.noises import *
 from gwinc.ifo import PLOT_STYLE
-
+from susth import STNpy
 
 class QuantumVacuum(nb.Budget):
     """Quantum Vacuum
@@ -20,7 +22,16 @@ class QuantumVacuum(nb.Budget):
         QuantumVacuumReadout,
         QuantumVacuumQuadraturePhase,
     ]
-
+class SusThermal(nb.Noise):
+    style = dict(
+        label = 'suspension thermal',
+        color = 'orange'
+        )
+    def calc(self):
+        #STNpy return PSD
+        noise, noise_h, noise_cv = STNpy(self.freq, self.ifo)
+        #turn into displacement PSD
+        return noise*(self.ifo.Infrastructure.Length)**2
 
 class ETHF(nb.Budget):
 
@@ -30,7 +41,7 @@ class ETHF(nb.Budget):
         QuantumVacuum,
         Seismic,
         Newtonian,
-        SuspensionThermal,
+        SusThermal,
         CoatingBrownian,
         CoatingThermoOptic,
         SubstrateBrownian,
