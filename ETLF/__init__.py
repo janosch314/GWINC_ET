@@ -22,7 +22,7 @@ class QuantumVacuum(nb.Budget):
     ]
 class SusThermal(nb.Noise):
     style = dict(
-        label = 'suspension thermal',
+        label = 'Suspension Thermal',
         color = 'orange'
         )
     def calc(self):
@@ -50,7 +50,7 @@ class ETLF(nb.Budget):
     ]
 
     plot_style = PLOT_STYLE
-<<<<<<< HEAD
-=======
+
+
     freq = '1:3000:4000'
->>>>>>> master
+
