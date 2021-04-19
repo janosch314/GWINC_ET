@@ -50,3 +50,7 @@ class ETLF(nb.Budget):
     ]
 
     plot_style = PLOT_STYLE
+<<<<<<< HEAD
+=======
+    freq = '1:3000:4000'
+>>>>>>> master
