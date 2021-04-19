@@ -24,7 +24,7 @@ class QuantumVacuum(nb.Budget):
     ]
 class SusThermal(nb.Noise):
     style = dict(
-        label = 'suspension thermal',
+        label = 'Suspension Thermal',
         color = 'orange'
         )
     def calc(self):
