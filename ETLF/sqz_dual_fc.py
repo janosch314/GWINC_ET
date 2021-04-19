@@ -48,6 +48,6 @@ def computeFCParams(ifo):
 
 if __name__ == "__main__":
     import gwinc
-    budget = gwinc.load_budget('../ETHF')
+    budget = gwinc.load_budget('../ETLF')
     for fc in computeFCParams(budget.ifo):
         print(fc.to_yaml())
