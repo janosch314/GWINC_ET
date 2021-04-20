@@ -1,5 +1,5 @@
 # GWINC aLIGO interferometer parameters
-#
+# ---High Frequency interferometer---
 # parameters for quad pendulum suspension updated 3rd May 2006, NAR
 # References:
 # LIGO-T000012-00-D
@@ -79,6 +79,7 @@ Seismic:
   RayleighWaveSpeed: 250          # m/s
 
 Suspension:
+  Optcyl: 0
   Type: 'Quad'
   FiberType: 'Ribbon'
   BreakStress: 750e6              # Pa; ref. K. Strain
@@ -135,43 +136,65 @@ Suspension:
   # in suspQuad, so including it here would double count)
   Stage:
     # Stage1
+    # Test Mass
     - Mass: 200                  # kg; current numbers May 2006 NAR
       # length adjusted for d = 10mm and d_bend = 4mm
       # (since 602mm is the CoM separation, and d_bend is accounted for
       # in suspQuad, so including it here would double count)
-      Length: 0.7               # m
+      Length: 1.5               # m
       Dilution: .nan              #
-      K: .nan                     # N/m; vertical spring constant
-      WireRadius: .nan            # m
-      Blade: .nan                 # blade thickness
+      K: 1.4                     # N/m; vertical spring constant
+      WireRadius: 200e-6 
+      WireDiameter: 400e-6         # as in Virgo GWINC
+      Blade: .nan                # blade thickness
       NWires: 4
+      WireDiameter1: 762e-6
+      WireDiameter2: 310e-6
+      WireDiameter3: 762e-6
+      Length1: 0.05
+      Length2: 0.6
+      Length3: 0.05
+      Qvh: 1e20
+      Qvv: 1e20
 
     # Stage2
+    # Mirror reaction mass
     - Mass: 200
-      Length: 1
+      Length: 1.5
       Dilution: 106
       K: 5200
-      WireRadius: 675e-6
-      Blade: 4200e-6
-      NWires: 1
+      WireRadius: 200e-6
+      WireDiameter: 400e-6
+      Blade: .nan
+      NWires: 4
+      Qvh: 1e20
+      Qvv: 1e5
 
     # Stage3
-    - Mass: 100
-      Length: 1
+    # Marionetta
+    - Mass: 422
+      Length: 2.0
       Dilution: 80
       K: 3900
-      WireRadius: 876e-6
+      WireRadius: 0.925e-3
+      WireDiameter: 1.85e-3
       Blade: 4600e-6
       NWires: 1
+      Qvh: 30000
+      Qvv: 30000
 
     # Stage4
-    - Mass: 100
-      Length: 1
+    # Marionetta reaction mass
+    - Mass: 422
+      Length: 2.0
       Dilution: 87
-      K: 3400
-      WireRadius: 1040e-6
+      K: 3900
+      WireRadius: 0.925e-3
+      WireDiameter: 1.85e-3
       Blade: 4300e-6
       NWires: 1
+      Qvh: 30000
+      Qvv: 30000
 
   Ribbon:
     Thickness: 255.315e-6             # m
@@ -292,5 +315,3 @@ Squeezer:
      Rot: 0                        # phase rotation after cavity
      fdetune: -30.4806538218251               # detuning [Hz]
      Ti:  0.000768937                    # input mirror trasmission [Power]
-
-   
