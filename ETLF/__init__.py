@@ -26,8 +26,8 @@ class SusThermal(nb.Noise):
         color = 'orange'
         )
     def calc(self):
-        noise, noise_h, noise_cv = STNpy(self.freq, self.ifo)
-        return noise*(self.ifo.Infrastructure.Length)**2
+        noise, _, _ = STNpy(self.freq, self.ifo)
+        return noise
 
 class ETLF(nb.Budget):
 

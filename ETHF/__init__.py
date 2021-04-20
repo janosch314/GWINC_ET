@@ -29,9 +29,9 @@ class SusThermal(nb.Noise):
         )
     def calc(self):
         #STNpy return PSD
-        noise, noise_h, noise_cv = STNpy(self.freq, self.ifo)
+        noise, _, _ = STNpy(self.freq, self.ifo)
         #turn into displacement PSD
-        return noise*(self.ifo.Infrastructure.Length)**2
+        return noise
 
 class ETHF(nb.Budget):
 

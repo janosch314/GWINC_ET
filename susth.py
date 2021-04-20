@@ -234,7 +234,7 @@ def STNpy(f,ifo):
         admittance = 1j*w*Xh[1,:]
         return admittance
     def FDT(Temperature, admittance, w):
-        s_density=4*kb*Temperature*np.real(admittance)/(w**2)*4/(3000**2)
+        s_density=4*kb*Temperature*np.real(admittance)/(w**2)*4
         return s_density
 
     admittance_h = admittance(Xh[1,:])

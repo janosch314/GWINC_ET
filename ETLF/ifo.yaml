@@ -375,12 +375,12 @@ Squeezer:
       Te: 5e-6                      # end mirror trasmission
       Lrt: 70e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: -6.693               # detuning [Hz]
-      Ti:  0.001226                    # input mirror trasmission [Power]
+      fdetune: -6.883               # detuning [Hz]
+      Ti:  0.00127                    # input mirror trasmission [Power]
 
     - L: 10000                       # cavity length
       Te: 5e-6                      # end mirror trasmission
       Lrt: 70e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: 25.345688              # detuning [Hz]
-      Ti: 0.0047726                    # input mirror trasmission [Power]
+      fdetune: 25.305              # detuning [Hz]
+      Ti: 0.0048                    # input mirror trasmission [Power]

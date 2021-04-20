@@ -6,8 +6,7 @@ def computeFCParams(ifo):
     c = const.c
     Parm = ifo_power(ifo).parm
     w0 = 2 * pi * c / ifo.Laser.Wavelength
-    rho = ifo.Materials.Substrate.MassDensity
-    m = pi * ifo.Materials.MassRadius**2 * ifo.Materials.MassThickness * rho
+    m = ifo.Suspension.Stage[0].Mass
     Larm = ifo.Infrastructure.Length
     Titm = ifo.Optics.ITM.Transmittance
     Tsrm = ifo.Optics.SRM.Transmittance
