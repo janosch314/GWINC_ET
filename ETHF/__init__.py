@@ -25,7 +25,7 @@ class QuantumVacuum(nb.Budget):
 class SusThermal(nb.Noise):
     style = dict(
         label = 'Suspension Thermal',
-        color = 'orange'
+        color='#0d75f8',
         )
     def calc(self):
         #STNpy return PSD
