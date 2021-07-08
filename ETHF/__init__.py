@@ -3,6 +3,13 @@ from gwinc import nb, const
 from gwinc.ifo.noises import *
 from gwinc.ifo import PLOT_STYLE
 from susth import STNpy
+from envnoise import (
+        atmospheric_noise,
+        cavern_noise,
+        body_wave,
+        rayleigh_wave,
+        )
+newtonian_mitigation_factor = 3
 
 class QuantumVacuum(nb.Budget):
     """Quantum Vacuum
@@ -33,6 +40,52 @@ class SusThermal(nb.Noise):
         #turn into displacement PSD
         return noise
 
+class NewtonianBodyWave(nb.Noise):
+    style = dict(
+        label = 'Body Wave',
+        )
+    def calc(self):
+        noise = body_wave(self.freq)**2
+        return noise / newtonian_mitigation_factor**2
+
+class NewtonianRayleighWave(nb.Noise):
+    style = dict(
+        label = 'Rayleigh Wave',
+        )
+    def calc(self):
+        noise = rayleigh_wave(self.freq)**2
+        return noise / newtonian_mitigation_factor**2
+
+class NewtonianCavern(nb.Noise):
+    style = dict(
+        label = 'Cavern',
+        )
+    def calc(self):
+        noise = cavern_noise(self.freq)**2
+        return noise / newtonian_mitigation_factor**2
+
+class NewtonianAtmospheric(nb.Noise):
+    style = dict(
+        label = 'Atmospheric',
+        )
+    def calc(self):
+        noise = atmospheric_noise(self.freq)**2
+        return noise / newtonian_mitigation_factor**2
+
+class NewtonianNoise(nb.Budget):
+    """Newtonian"""
+    style = dict(
+        label = 'Newtonian Gravity',
+        color='#15b01a'
+        )
+    noises = [
+            NewtonianBodyWave,
+            NewtonianRayleighWave,
+            NewtonianCavern,
+            NewtonianAtmospheric
+            ]
+
+
 class ETHF(nb.Budget):
 
     name = 'ETHF'
@@ -40,7 +93,7 @@ class ETHF(nb.Budget):
     noises = [
         QuantumVacuum,
         Seismic,
-        Newtonian,
+        NewtonianNoise,
         SusThermal,
         CoatingBrownian,
         CoatingThermoOptic,
