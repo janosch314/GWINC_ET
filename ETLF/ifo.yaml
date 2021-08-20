@@ -239,14 +239,14 @@ Materials:
     c2: 3e-13            # Coeff of freq dep. term for bulk loss (Lam & Douglass, 1981)
     MechanicalLossExponent: 1 # Exponent for freq dependence of silicon loss
     Alphas: 5.2e-12      # Surface loss limit ???
-    MirrorY: 155.8e9     # N/m^2; Youngs modulus (ioffe) -- what about anisotropy??
-    MirrorSigma: 0.27    # kg/m^3; Poisson ratio (ioffe) -- what about anisotropy??
-    MassDensity: 2329    # kg/m^3; (ioffe)
-    MassAlpha: 1e-9      # 1/K; CTE = 0 @ 120 K
-    MassCM: 300          # J/kg/K; specific heat (ioffe @ 120K)
-    MassKappa: 700       # W/(m*K); thermal conductivity (ioffe @ 120)
-    RefractiveIndex: 3.5 # 3.38 * (1 + 4e-5 * T)   (ioffe)
-    dndT: 2e-5           # ~123K & 1900 nm : http://arxiv.org/abs/physics/0606168
+    MirrorY: 1.62e11     # N/m^2; Youngs modulus (ioffe) -- what about anisotropy??
+    MirrorSigma: 0.22    # kg/m^3; Poisson ratio (ioffe) -- what about anisotropy??
+    MassDensity: 2331    # kg/m^3; (ioffe)
+    MassAlpha: 4.85e-10   # 1/K; CTE = 0 @ 10 K
+    MassCM: 0.276         # J/kg/K; specific heat (ioffe @ 10K)
+    MassKappa: 2330       # W/(m*K); thermal conductivity (ioffe @ 10)
+    RefractiveIndex: 3.45 # 3.38 * (1 + 4e-5 * T)   (ioffe)
+    dndT: 5.8e-6           # ~123K & 1900 nm : http://arxiv.org/abs/physics/0606168
     Temp: 10             # mirror temperature [K]
     ## parameters for semiconductor optics
     isSemiConductor: True     # we are doing semiconductor optics
