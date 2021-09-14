@@ -1,7 +1,4 @@
-# This scripts translates into python the Advanced Virgo suspension thermal noise script
-# and integrates it into the Einstein Telescope noise-budget. The calculations are given
-# in the Virgo Technical Document 'VIR-015A-09' (PPP effect).
-# V0 A.Utina, T.Zhang
+# D Brown, T.Zhang
 
 import os
 import numpy as np
@@ -12,25 +9,24 @@ from const import BESSEL_ZEROS as zeta
 from const import J0M as j0m
 from gwinc.noise.substratethermal import substrate_thermoelastic_FiniteCorr
 
-#def J(Ome):
-#    A=np.sqrt(1/Ome**4*np.sqrt(2))
-#    B=np.sqrt(1/Ome/10)
-#    Result=(1/(1/A+1/B))
-#    return Result
+def J(Ome):
+    A=np.sqrt(1/Ome**4*np.sqrt(2))
+    B=np.sqrt(1/Ome/10)
+    Result=(1/(1/np.sqrt(A)+1/np.sqrt(B)))**2
+    return Result
     
-def integrand(v, u, Omega):
-    """ Integrand from
-    https://link.aps.org/doi/10.1103/PhysRevLett.91.260602
-    """
-    a = u**2 + v**2
-    return np.sqrt(2/np.pi)/np.pi * u**3 * np.exp(-u**2/2) / (a * (a**2 + Omega**2))
+#def integrand(v, u, Omega):
+#    """ Integrand fromhttps://link.aps.org/doi/10.1103/PhysRevLett.91.260602
+#    """
+#    a = u**2 + v**2
+#    return np.sqrt(2/np.pi)/np.pi * u**3 * np.exp(-u**2/2) / (a * (a**2 + Omega**2))
 
-J = np.vectorize(
+#J = np.vectorize(
     # Obviously we can't numerically integrate to infinity.
     # So the bounds here are hand picked so it operates
     # reasonably well over 1e-4 to 1e4 range.
-    lambda Omega: integrate.dblquad(integrand, 0, 10, lambda x: -4, lambda x: 4, args=(Omega,))[0]
-)
+#    lambda Omega: integrate.dblquad(integrand, 0, 10, lambda x: -4, lambda x: 4, args=(Omega,))[0]
+#)
 
 def substratethermoelastic(f, materials, wBeam):
 
