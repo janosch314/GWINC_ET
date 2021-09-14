@@ -242,9 +242,9 @@ Materials:
     MirrorY: 1.62e11     # N/m^2; Youngs modulus (ioffe) -- what about anisotropy??
     MirrorSigma: 0.22    # kg/m^3; Poisson ratio (ioffe) -- what about anisotropy??
     MassDensity: 2331    # kg/m^3; (ioffe)
-    MassAlpha: 4.85e-10   # 1/K; CTE = 0 @ 10 K
+    MassAlpha: 4.8e-10   # 1/K; CTE = 0 @ 10 K
     MassCM: 0.276         # J/kg/K; specific heat (ioffe @ 10K)
-    MassKappa: 2330       # W/(m*K); thermal conductivity (ioffe @ 10)
+    MassKappa: 1000       # W/(m*K); thermal conductivity (ioffe @ 10)
     RefractiveIndex: 3.45 # 3.38 * (1 + 4e-5 * T)   (ioffe)
     dndT: 5.8e-6           # ~123K & 1900 nm : http://arxiv.org/abs/physics/0606168
     Temp: 10             # mirror temperature [K]
@@ -372,15 +372,15 @@ Squeezer:
   # Parameters for frequency dependent squeezing
   FilterCavity:
     - L: 10000                        # cavity length
-      Te: 5e-6                      # end mirror trasmission
-      Lrt: 70e-6                    # round-trip loss in the cavity
+      Te: 1e-6                      # end mirror trasmission
+      Lrt: 75e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
       fdetune: -6.883               # detuning [Hz]
       Ti:  0.00127                    # input mirror trasmission [Power]
 
     - L: 10000                       # cavity length
-      Te: 5e-6                      # end mirror trasmission
-      Lrt: 70e-6                    # round-trip loss in the cavity
+      Te: 1e-6                      # end mirror trasmission
+      Lrt: 75e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
       fdetune: 25.305              # detuning [Hz]
       Ti: 0.0048                    # input mirror trasmission [Power]

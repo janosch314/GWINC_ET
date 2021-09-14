@@ -1,6 +1,8 @@
 from gwinc.ifo.noises import *
 from gwinc.ifo import PLOT_STYLE
+from gwinc.ifo.noises import arm_cavity
 from susth import STNpy
+from thermoelastic import substratethermoelastic
 from envnoise import (
         atmospheric_noise,
         cavern_noise,
@@ -38,6 +40,20 @@ class SusThermal(nb.Noise):
         noise, _, _ = STNpy(self.freq, self.ifo)
         return noise
 
+class SubThermalElastic(nb.Noise):
+    style = dict(
+        label = 'Substrate Thermal Elastic',
+        color='#ffd700',
+        linestyle='--',
+        )
+    def calc(self):
+        cavity = arm_cavity(self.ifo)
+        nITM = substratethermoelastic(
+            self.freq, self.ifo.Materials, cavity.wBeam_ITM)
+        nETM = substratethermoelastic(
+            self.freq, self.ifo.Materials, cavity.wBeam_ETM)
+        return (nITM + nETM) * 2
+        
 class Seismic(nb.Noise):
     style = dict(
         label = 'Seismic',
@@ -104,7 +120,7 @@ class ETLF(nb.Budget):
         CoatingBrownian,
         CoatingThermoOptic,
         SubstrateBrownian,
-        SubstrateThermoElastic,
+        SubThermalElastic,
         ExcessGas,
     ]
 
