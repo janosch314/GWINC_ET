@@ -10,6 +10,11 @@ from envnoise import (
         rayleigh_wave,
         seismic_noise
         )
+from gasdamping import (
+        S_F_weiss,
+        S_F_cavalleri,
+        calc_x_noise
+        )
 
 newtonian_mitigation_factor = 3
 
@@ -43,7 +48,7 @@ class SusThermal(nb.Noise):
 class SubThermalElastic(nb.Noise):
     style = dict(
         label = 'Substrate Thermal Elastic',
-        color='#ffd700',
+        color='#f5bf03',
         linestyle='--',
         )
     def calc(self):
@@ -107,6 +112,19 @@ class NewtonianNoise(nb.Budget):
             NewtonianCavern,
             NewtonianAtmospheric
             ]
+            
+class ResidualGas(nb.Noise):
+    style = dict(
+        label = 'Excess Gas',
+        color='#add00d',
+        linestyle='--',
+        )
+    def calc(self):
+        n = noise.residualgas.residual_gas_cavity(self.freq, self.ifo)
+        dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
+        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo),self.ifo)
+        return n * 2 / sinc_sqr + dam
+
 
 class ETLF(nb.Budget):
 
@@ -121,7 +139,7 @@ class ETLF(nb.Budget):
         CoatingThermoOptic,
         SubstrateBrownian,
         SubThermalElastic,
-        ExcessGas,
+        ResidualGas,
     ]
 
     calibrations = [
