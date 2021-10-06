@@ -33,7 +33,7 @@ Infrastructure:
   Length: 10000                    # m
   Temp: 290                       # K
   ResidualGas:
-    pressure: 1e-8              # Pa
+    pressure: 5e-8              # Pa
     mass: 3.34765e-27             # kg; Mass of H_2
     polarizability: 7.81917e-31       # m^3
 

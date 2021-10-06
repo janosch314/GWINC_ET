@@ -9,6 +9,11 @@ from envnoise import (
         body_wave,
         rayleigh_wave,
         )
+from gasdamping import (
+        S_F_weiss,
+        S_F_cavalleri,
+        calc_x_noise
+        )
 newtonian_mitigation_factor = 3
 
 class QuantumVacuum(nb.Budget):
@@ -84,6 +89,18 @@ class NewtonianNoise(nb.Budget):
             NewtonianCavern,
             NewtonianAtmospheric
             ]
+            
+class ResidualGas(nb.Noise):
+    style = dict(
+        label = 'Excess Gas',
+        color='#add00d',
+        linestyle='--',
+        )
+    def calc(self):
+        n = noise.residualgas.residual_gas_cavity(self.freq, self.ifo)
+        dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
+        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo),self.ifo)
+        return n * 2 / sinc_sqr + dam
 
 
 class ETHF(nb.Budget):
@@ -99,7 +116,7 @@ class ETHF(nb.Budget):
         CoatingThermoOptic,
         SubstrateBrownian,
         SubstrateThermoElastic,
-        ExcessGas,
+        ResidualGas,
     ]
 
     calibrations = [
