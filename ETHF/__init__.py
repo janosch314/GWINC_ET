@@ -110,13 +110,13 @@ class ETHF(nb.Budget):
     noises = [
         QuantumVacuum,
         Seismic,
-        NewtonianNoise,
+        Newtonian,
         SusThermal,
         CoatingBrownian,
         CoatingThermoOptic,
         SubstrateBrownian,
         SubstrateThermoElastic,
-        ResidualGas,
+        ExcessGas,
     ]
 
     calibrations = [
