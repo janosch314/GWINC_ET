@@ -116,7 +116,7 @@ class ETHF(nb.Budget):
         CoatingThermoOptic,
         SubstrateBrownian,
         SubstrateThermoElastic,
-        ExcessGas,
+        ResidualGas,
     ]
 
     calibrations = [

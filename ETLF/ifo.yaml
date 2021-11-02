@@ -232,7 +232,7 @@ Materials:
     Betalown: 8e-6                # dn/dT,  (ref. 14)
     ThermalDiffusivitylown: 1.38  # Fejer et al
     Indexlown: 1.45
-    Philown: 5e-4               # loss angle at 100Hz, 20K [R. Robie, PhD thesis]
+    Philown: 5e-4                 # loss angle at 100Hz, 20K [R. Robie, PhD thesis]
     Philown_slope: 0
   ## Substrate Material parameters--------------------------------------------
   Substrate:
@@ -372,14 +372,14 @@ Squeezer:
   # Parameters for frequency dependent squeezing
   FilterCavity:
     - L: 1000                        # cavity length
-      Te: 1e-6                      # end mirror trasmission
+      Te: 2e-6                      # end mirror trasmission
       Lrt: 10e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
       fdetune: -6.882666               # detuning [Hz]
       Ti:  0.000127                    # input mirror trasmission [Power]
 
     - L: 1000                       # cavity length
-      Te: 1e-6                      # end mirror trasmission
+      Te: 2e-6                      # end mirror trasmission
       Lrt: 10e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
       fdetune: 25.305748              # detuning [Hz]
