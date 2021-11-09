@@ -41,9 +41,9 @@ class SusThermal(nb.Noise):
         )
     def calc(self):
         #STNpy return PSD
-        noise, _, _ = STNpy(self.freq, self.ifo)
+        _, noise = STNpy(self.freq,self.ifo.Suspension,self.ifo)
         #turn into displacement PSD
-        return noise
+        return noise.real
 
 class NewtonianBodyWave(nb.Noise):
     style = dict(

@@ -42,8 +42,8 @@ class SusThermal(nb.Noise):
         color='#0d75f8',
         )
     def calc(self):
-        noise, _, _ = STNpy(self.freq, self.ifo)
-        return noise
+        _,noise = STNpy(self.freq, self.ifo.Suspension, self.ifo)
+        return noise.real
 
 class SubThermalElastic(nb.Noise):
     style = dict(

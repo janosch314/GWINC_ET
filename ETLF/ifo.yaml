@@ -84,8 +84,8 @@ Suspension:
   FiberType: 'Ribbon'
   BreakStress: 750e6              # Pa; ref. K. Strain
   Temp: 10
-  # VHCoupling:
-  #   theta: 1e-3                   # vertical-horizontal x-coupling (computed in precompIFO)
+  VHCoupling:
+    theta: 7.8e-4                   # vertical-horizontal x-coupling (computed in precompIFO)
 
   Silica:
     Rho   : 2.2e3                 # Kg/m^3;
@@ -118,16 +118,26 @@ Suspension:
   # ref http://www.ioffe.ru/SVA/NSM/Semicond/Si/index.html
   # all properties should be for T ~ 120 K
   Silicon:
-    Rho: 2329                           # Kg/m^3;  density
+    Rho: 2331.5 #2329                           # Kg/m^3;  density
     C: 2.7554e-1                        # J/kg/K   heat capacity
     K: 1000                             # W/m/K    thermal conductivity
     Alpha: 4.847e-10                    #1e-10  # 1/K      thermal expansion coeff
     # from Gysin, et. al. PRB (2004)  E(T): E0 - B*T*exp(-T0/T)
     # E0: 167.5e9 Pa   T0: 317 K   B: 15.8e6 Pa/K
     dlnEdT: -7.88e-6                       # (1/K)    dlnE/dT  T=120K
-    Phi: 2e-9                           # Nawrodt (2010)      loss angle  1/Q
+    Phi: 1e-8                           # Nawrodt (2010)      loss angle  1/Q
     Y: 1.32e11                          # Pa       Youngs Modulus
-    Dissdepth: 1.5e-3                   # 10x smaller surface loss depth (Nawrodt (2010))
+    Dissdepth: 0  #1.5e-3                   # 10x smaller surface loss depth (Nawrodt (2010))
+    
+  Tita:
+    Rho: 4453
+    C: 0.07
+    K: 0.14
+    Alpha: 0
+    dlnEdT: -4.6e-4
+    Phi: 1e-4
+    Y: 1.27e11
+    Dissdepth: 0
 
   # Note stage numbering: mirror is at beginning of stack, not end
   #
@@ -137,10 +147,12 @@ Suspension:
   Stage:
     # Stage1
     # Test mass
-    - Mass: 200                # kg; current numbers May 2006 NAR
+    - Mass: 211                # kg; current numbers May 2006 NAR
       # length adjusted for d = 10mm and d_bend = 4mm
       # (since 602mm is the CoM separation, and d_bend is accounted for
       # in suspQuad, so including it here would double count)
+      Temp: 10
+      WireMaterial : 'Silicon'
       Length: 2.0               # m
       Dilution: .nan              #
       K: .nan                     # N/m; vertical spring constant
@@ -159,7 +171,9 @@ Suspension:
 
     # Stage2
     # Mirror reaction mass
-    - Mass: 200
+    - Mass: 211
+      Temp: 10
+      WireMaterial : 'Silicon'
       Length: 2.0
       Dilution: 106
       K: 5200
@@ -173,15 +187,17 @@ Suspension:
     # Stage3
     # Marionetta
     - Mass: 422
+      Temp: 2
+      WireMaterial : 'Tita'
       Length: 2.0
       Dilution: 80
       K: 3900
-      WireRadius: 1.5e-3
-      WireDiameter: 3e-3
+      WireRadius: 2.5e-3
+      WireDiameter: 5e-3
       Blade: 4600e-6
       NWires: 1
-      Qvh: 1e6
-      Qvv: 1e6
+      Qvh: 1e20
+      Qvv: 1e20
 
     # Stage4
     # Marionetta reaction mass
@@ -375,12 +391,12 @@ Squeezer:
       Te: 2e-6                      # end mirror trasmission
       Lrt: 10e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: -6.882666               # detuning [Hz]
-      Ti:  0.000127                    # input mirror trasmission [Power]
+      fdetune: -6.695222               # detuning [Hz]
+      Ti:  0.000122654                    # input mirror trasmission [Power]
 
     - L: 1000                       # cavity length
       Te: 2e-6                      # end mirror trasmission
       Lrt: 10e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: 25.305748              # detuning [Hz]
-      Ti: 0.00048                    # input mirror trasmission [Power]
+      fdetune: 25.3452304              # detuning [Hz]
+      Ti: 0.00047729                    # input mirror trasmission [Power]

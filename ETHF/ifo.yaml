@@ -84,18 +84,18 @@ Suspension:
   FiberType: 'Ribbon'
   BreakStress: 750e6              # Pa; ref. K. Strain
   Temp: 290
-  # VHCoupling:
-  #   theta: 1e-3                   # vertical-horizontal x-coupling (computed in precompIFO)
+  VHCoupling:
+    theta: 7.8e-4                   # vertical-horizontal x-coupling (computed in precompIFO)
 
   Silica:
     Rho   : 2.2e3                 # Kg/m^3;
     C     : 772                   # J/Kg/K;
     K     : 1.38                  # W/m/kg;
-    Alpha : 3.9e-7                # 1/K;
-    dlnEdT: 1.52e-4               # (1/K), dlnE/dT
-    Phi   : 4.1e-10               # from G Harry e-mail to NAR 27April06 dimensionless units
-    Y     : 7.2e10                # Pa; Youngs Modulus
-    Dissdepth: 1.5e-2             # from G Harry e-mail to NAR 27April06
+    Alpha : 5.1e-7 #3.9e-7                # 1/K;
+    dlnEdT: 1.86e-4 #1.52e-4               # (1/K), dlnE/dT
+    Phi   : 3.3e-8 #4.1e-10               # from G Harry e-mail to NAR 27April06 dimensionless units
+    Y     : 7.29e10   #7.2e10              # Pa; Youngs Modulus
+    Dissdepth: 2.0e-4 #1.5e-2             # from G Harry e-mail to NAR 27April06
 
   C70Steel:
     Rho: 7800
@@ -107,13 +107,24 @@ Suspension:
     Y: 212e9                      # measured by MB for one set of wires
 
   MaragingSteel:
-    Rho: 7800
+    Rho: 8000 #7800
     C: 460
     K: 20
     Alpha: 11e-6
-    dlnEdT: 0
+    dlnEdT: -2.98e-4
     Phi: 1e-4
-    Y: 187e9
+    Y: 188.3e9 #187e9
+    Dissdepth: 0
+    
+  C85Steel:
+    Rho: 7900
+    C: 502
+    K: 50
+    Alpha: 0e-6
+    dlnEdT: -1.32e-4
+    Phi: 1e-4
+    Y: 212.12e9
+    Dissdepth: 0
 
   # ref http://www.ioffe.ru/SVA/NSM/Semicond/Si/index.html
   # all properties should be for T ~ 120 K
@@ -127,7 +138,7 @@ Suspension:
     dlnEdT: -2e-5                 # (1/K)    dlnE/dT  T=120K
     Phi: 2e-9                     # Nawrodt (2010)      loss angle  1/Q
     Y: 155.8e9                    # Pa       Youngs Modulus
-    Dissdepth: 1.5e-3             # 10x smaller surface loss depth (Nawrodt (2010))
+    Dissdepth: 0  #1.5e-3             # 10x smaller surface loss depth (Nawrodt (2010))
 
   # Note stage numbering: mirror is at beginning of stack, not end
   #
@@ -141,16 +152,18 @@ Suspension:
       # length adjusted for d = 10mm and d_bend = 4mm
       # (since 602mm is the CoM separation, and d_bend is accounted for
       # in suspQuad, so including it here would double count)
-      Length: 1.5               # m
+      Temp: 290
+      WireMaterial : 'Silica'
+      Length: 2.0               # m
       Dilution: .nan              #
       K: 1.4                     # N/m; vertical spring constant
-      WireRadius: 200e-6 
-      WireDiameter: 400e-6         # as in Virgo GWINC
+      WireRadius: 4e-4
+      WireDiameter: 8e-4         # as in Virgo GWINC
       Blade: .nan                # blade thickness
       NWires: 4
-      WireDiameter1: 762e-6
-      WireDiameter2: 310e-6
-      WireDiameter3: 762e-6
+      WireDiameter1: 800e-6
+      WireDiameter2: 300e-6
+      WireDiameter3: 800e-6
       Length1: 0.05
       Length2: 0.6
       Length3: 0.05
@@ -160,28 +173,32 @@ Suspension:
     # Stage2
     # Mirror reaction mass
     - Mass: 200
-      Length: 1.5
+      Temp: 290
+      WireMaterial : 'C85Steel'
+      Length: 2.0
       Dilution: 106
-      K: 5200
-      WireRadius: 200e-6
-      WireDiameter: 400e-6
+      K: 50
+      WireRadius: 0.5e-3
+      WireDiameter: 1e-3
       Blade: .nan
       NWires: 4
       Qvh: 1e20
-      Qvv: 1e5
+      Qvv: 1e20
 
     # Stage3
     # Marionetta
-    - Mass: 422
+    - Mass: 400
+      Temp: 290
+      WireMaterial : 'MaragingSteel'
       Length: 2.0
       Dilution: 80
-      K: 3900
-      WireRadius: 0.925e-3
-      WireDiameter: 1.85e-3
+      K: 20
+      WireRadius: 1.125e-3
+      WireDiameter: 2.25e-3
       Blade: 4600e-6
       NWires: 1
-      Qvh: 30000
-      Qvv: 30000
+      Qvh: 1e6
+      Qvv: 1e6
 
     # Stage4
     # Marionetta reaction mass
@@ -311,7 +328,7 @@ Squeezer:
   FilterCavity:
      L: 300                        # cavity length
      Te: 2e-6                      # end mirror trasmission
-     Lrt: 20e-6                    # round-trip loss in the cavity
+     Lrt: 30e-6                    # round-trip loss in the cavity
      Rot: 0                        # phase rotation after cavity
-     fdetune: -30.4806538218251               # detuning [Hz]
-     Ti:  0.000768937                    # input mirror trasmission [Power]
+     fdetune: -30.457318               # detuning [Hz]
+     Ti:  0.00076667             # input mirror trasmission [Power]
