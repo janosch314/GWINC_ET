@@ -1,7 +1,8 @@
 from gwinc.ifo.noises import *
 from gwinc.ifo import PLOT_STYLE
 from gwinc.ifo.noises import arm_cavity
-from susth import STNpy
+from susth import STNRmodal
+from susth import STNViol
 from thermoelastic import substratethermoelastic
 from envnoise import (
         atmospheric_noise,
@@ -42,8 +43,9 @@ class SusThermal(nb.Noise):
         color='#0d75f8',
         )
     def calc(self):
-        _,noise = STNpy(self.freq, self.ifo.Suspension, self.ifo)
-        return noise.real
+        _,noise = STNRmodal(self.freq, self.ifo.Suspension, self.ifo)
+        violin = STNViol(self.freq, self.ifo.Suspension, self.ifo)
+        return (noise+violin).real
 
 class SubThermalElastic(nb.Noise):
     style = dict(

@@ -1,16 +1,10 @@
-# This scripts translates into python the Advanced Virgo suspension thermal noise script
-# and integrates it into the Einstein Telescope noise-budget. The calculations are given
-# in the Virgo Technical Document 'VIR-015A-09' (PPP effect).
-# V0 A.Utina, T.Zhang
-
-
 import os
 import numpy as np
 from numpy import pi, sqrt, arctan, sin, cos, roots, size, real, imag, sqrt, exp
 import const
 
 
-def STNpy(f,Susp,ifo):
+def STNRmodal(f,Susp,ifo):
     T=Susp.Temp #Temperature (K)
     Tmirror=Susp.Stage[0].Temp
     Trm=Susp.Stage[1].Temp
@@ -469,3 +463,105 @@ def STNpy(f,Susp,ifo):
     h2xth_FDTTOT=(h2xth_FDT+thetaHV**2*h2xth_FDTv)*Lharm**2
 
     return h2xth_modalTOT, h2xth_FDTTOT
+    
+    
+def STNViol(f,Susp,ifo):
+
+    
+    #-------------Physical parameters----------------------------------
+    Tmirror=Susp.Stage[0].Temp
+    Trm=Susp.Stage[1].Temp
+    Tmario=Susp.Stage[2].Temp
+    g=const.g    #gravitational acceleration (m/s^2)
+    kb=const.kB  #Boltzmann constant (J/K)
+    w=2*pi*f
+    Lharm=ifo.Infrastructure.Length
+    Mmirror=Susp.Stage[0].Mass   #Mirror mass
+    nw=Susp.Stage[0].NWires
+    Lmirror=Susp.Stage[0].Length
+    dwmirror=ifo.Suspension.Stage[0].WireDiameter
+    
+    WireMat0=Susp.Stage[0].WireMaterial
+    WireMat1=Susp.Stage[1].WireMaterial
+    WireMat2=Susp.Stage[2].WireMaterial
+    
+    alphamir=Susp[WireMat0].Alpha # FS expansion coefficient [1/K]
+    betamir=Susp[WireMat0].dlnEdT# FS 1/E dE/dT [1/K]
+    Cmir=Susp[WireMat0].C# FS Thermal coefficient [J/(kg K)]
+    Kmir=Susp[WireMat0].K# FS thermal conduction [W/(m K)]
+    Ymir=Susp[WireMat0].Y#
+    rhomir=Susp[WireMat0].Rho#
+    phimir=Susp[WireMat0].Phi# FS bulk loss angle
+    ds=Susp[WireMat0].Dissdepth# Surface depth
+    Qvhmirror=Susp.Stage[0].Qvh
+    
+    rwmirror=dwmirror/2
+    I2mirror=pi/4*rwmirror**4
+    Amirror=pi*rwmirror**2
+    Lambda=Mmirror*g/nw
+    omega2g=(g/Lmirror)**0.5
+    k2v=nw*Amirror*Ymir/Lmirror
+    omega02v=(k2v/Mmirror)**0.5
+    thetaHV=Susp.VHCoupling.theta
+    GammaMir=Lambda
+    w=2*pi*f
+    nmodi=100
+    ke=(Lambda/I2mirror/Ymir)**0.5
+    
+    phithT=np.zeros(len(f),dtype = "complex_")
+    phiT=np.zeros(len(f),dtype = "complex_")
+    phiP=np.zeros(len(f),dtype = "complex_")
+    omegaviol=np.zeros(nmodi,dtype = "complex_")
+    iviol=np.zeros(len(f),dtype = "complex_")
+    phiviol=np.zeros(nmodi,dtype = "complex_")
+    Trasf=np.zeros([nmodi,len(f)],dtype = "complex_")
+    Somma=np.zeros(len(f),dtype = "complex_")
+    
+    
+    #Mirror Pendulum Loss Angle
+    TensMirror=Mmirror*g/nw
+    DFmirror=(1/Lmirror)*(nw*Ymir*I2mirror/Mmirror/g)**0.5;    #Dilution factor
+    mu=4/rwmirror
+    #phie=(muw*hbs*Sw/Vw)*phisurf;  %eccess losses
+    phie=mu*ds*phimir
+    #Thermoelastic noise
+    Delta=(Ymir*Tmirror/rhomir/Cmir)*(alphamir-betamir*(Lambda/Amirror/Ymir))**2;
+    tau=((Cmir*(2*rwmirror)**2)/2.16/2/pi/Kmir)*rhomir
+    phiST=phie+phimir
+    for i in range(len(w)):
+        phithT[i]=Delta*w[i]*tau/(1+w[i]**2*tau**2)
+        
+    phiT=phithT+phiST
+    phiP=DFmirror*phiT
+    
+    phitheT=np.zeros(nmodi,dtype = "complex_")
+    phiTot=np.zeros(nmodi,dtype = "complex_")
+    ##Mode frequencies and losses
+    for n in range(nmodi):
+        omegaviol[n]=2*pi*((n+1)/2/Lmirror)*(GammaMir/Amirror/rhomir)**0.5*(1+(2/Lmirror)*(Ymir*I2mirror/GammaMir)**0.5)
+        phitheT[n]=Delta*omegaviol[n]*tau/(1+omegaviol[n]**2*tau**2)
+        phiTot[n]=phiST+phitheT[n]
+        phiviol[n]=(2*phiTot[n]/ke/Lmirror)*(1+(((n+1)*pi)**2/2/Lmirror/ke))
+        
+    viol1=omegaviol[0]/2/pi
+    viol2=omegaviol[1]/2/pi
+    viol3=omegaviol[2]/2/pi
+    phiviol1=phiviol[0]
+    phiviol2=phiviol[1]
+    phiviol3=phiviol[2]
+    
+    Factor=4*4*kb*Tmirror*2*rhomir*rwmirror**2*Lmirror/pi/Mmirror**2
+    
+    noise=np.zeros(len(w),dtype = "complex_")
+    for i in range(len(w)):
+        Somma[i]=0
+        for n in range(nmodi):
+            Trasf[n,i]=(1/(n+1)**2)*(phiviol[n]*omegaviol[n]**2)/((omegaviol[n]**2-w[i]**2)**2+(omegaviol[n]**2*phiviol[n])**2)
+            Somma[i]=Somma[i]+Trasf[n,i]
+        noise[i]=((2)**2)*(Factor*Somma[i]/w[i])
+            
+    return noise 
+        
+
+
+

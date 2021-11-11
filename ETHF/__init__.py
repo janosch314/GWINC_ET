@@ -2,7 +2,8 @@ import os
 from gwinc import nb, const
 from gwinc.ifo.noises import *
 from gwinc.ifo import PLOT_STYLE
-from susth import STNpy
+from susth import STNRmodal
+from susth import STNViol
 from envnoise import (
         atmospheric_noise,
         cavern_noise,
@@ -41,9 +42,10 @@ class SusThermal(nb.Noise):
         )
     def calc(self):
         #STNpy return PSD
-        _, noise = STNpy(self.freq,self.ifo.Suspension,self.ifo)
+        _, noise = STNRmodal(self.freq,self.ifo.Suspension,self.ifo)
+        violin = STNViol(self.freq, self.ifo.Suspension, self.ifo)
         #turn into displacement PSD
-        return noise.real
+        return (noise+violin).real
 
 class NewtonianBodyWave(nb.Noise):
     style = dict(
