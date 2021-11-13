@@ -33,9 +33,30 @@ Infrastructure:
   Length: 10000                    # m
   Temp: 290                       # K
   ResidualGas:
-    pressure: 5e-8             # Pa
-    mass: 3.34765e-27               # kg; Mass of H_2 (ref. 10)
-    polarizability: 7.81917e-31       # m^3
+    # polarizabilities from https://cccbdb.nist.gov/pollistx.asp
+    H2:
+      BeamtubePressure: 2.0e-8      # Pa
+      ChamberPressure: 2.0e-7       # Pa
+      mass: 3.35e-27                # kg; Mass of H_2 (ref. 10)
+      polarizability: 7.87e-31      # m^3;
+
+    N2:
+      BeamtubePressure: 5.0e-10
+      ChamberPressure: 5.0e-8
+      mass: 4.65e-26
+      polarizability: 1.71e-30
+
+    H2O:
+      BeamtubePressure: 1.0e-9
+      ChamberPressure: 1.0e-7
+      mass: 2.99e-26
+      polarizability: 1.50e-30
+
+    O2:
+      BeamtubePressure: 5e-10
+      ChamberPressure: 5.0e-8
+      mass: 5.31e-26
+      polarizability: 1.56e-30
 
 TCS:
   # The presumably dominant effect of a thermal lens in the ITMs is an increased
@@ -387,16 +408,16 @@ Squeezer:
 
   # Parameters for frequency dependent squeezing
   FilterCavity:
-    - L: 1000                        # cavity length
+    - L: 3000                        # cavity length
       Te: 2e-6                      # end mirror trasmission
-      Lrt: 10e-6                    # round-trip loss in the cavity
+      Lrt: 28e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: -6.695222               # detuning [Hz]
-      Ti:  0.000122654                    # input mirror trasmission [Power]
+      fdetune: -6.695223               # detuning [Hz]
+      Ti:  0.000368                    # input mirror trasmission [Power]
 
-    - L: 1000                       # cavity length
+    - L: 3000                       # cavity length
       Te: 2e-6                      # end mirror trasmission
-      Lrt: 10e-6                    # round-trip loss in the cavity
+      Lrt: 28e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: 25.3452304              # detuning [Hz]
-      Ti: 0.00047729                    # input mirror trasmission [Power]
+      fdetune: 25.345230              # detuning [Hz]
+      Ti: 0.001432                     # input mirror trasmission [Power]

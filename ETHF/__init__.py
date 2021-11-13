@@ -92,17 +92,17 @@ class NewtonianNoise(nb.Budget):
             NewtonianAtmospheric
             ]
             
-class ResidualGas(nb.Noise):
-    style = dict(
-        label = 'Excess Gas',
-        color='#add00d',
-        linestyle='--',
-        )
-    def calc(self):
-        n = noise.residualgas.residual_gas_cavity(self.freq, self.ifo)
-        dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
-        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo),self.ifo)
-        return n * 2 / sinc_sqr + dam
+#class ResidualGas(nb.Noise):
+    #style = dict(
+    #    label = 'Excess Gas',
+    #    color='#add00d',
+    #    linestyle='--',
+    #    )
+    #def calc(self):
+     #   n = noise.residualgas.residual_gas_cavity(self.freq, self.ifo)
+     #   dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
+     #   dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo),self.ifo)#
+      #  return n * 2 / sinc_sqr + dam
 
 
 class ETHF(nb.Budget):
@@ -118,7 +118,7 @@ class ETHF(nb.Budget):
         CoatingThermoOptic,
         SubstrateBrownian,
         SubstrateThermoElastic,
-        ResidualGas,
+        ExcessGas,
     ]
 
     calibrations = [
