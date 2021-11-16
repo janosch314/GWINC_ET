@@ -11,11 +11,6 @@ from envnoise import (
         rayleigh_wave,
         seismic_noise
         )
-from gasdamping import (
-        S_F_weiss,
-        S_F_cavalleri,
-        calc_x_noise
-        )
 
 newtonian_mitigation_factor = 3
 

@@ -10,11 +10,6 @@ from envnoise import (
         body_wave,
         rayleigh_wave,
         )
-from gasdamping import (
-        S_F_weiss,
-        S_F_cavalleri,
-        calc_x_noise
-        )
 newtonian_mitigation_factor = 3
 
 class QuantumVacuum(nb.Budget):
