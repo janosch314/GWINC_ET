@@ -1,6 +1,7 @@
 from gwinc.ifo.noises import *
 from gwinc.ifo import PLOT_STYLE
 from gwinc.ifo.noises import arm_cavity
+from gwinc.ifo.noises import ifo_power
 from susth import STNRmodal
 from susth import STNViol
 from thermoelastic import substratethermoelastic
@@ -121,7 +122,21 @@ class NewtonianNoise(nb.Budget):
   #      dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
   #      dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo),self.ifo)
   #      return n * 2 / sinc_sqr + dam
+class ITMThermoRefractive(nb.Noise):
 
+    style = dict(
+        label='ITM Thermo-Refractive',
+        color='#448ee4',
+        linestyle='--',
+    )
+
+    def calc(self):
+        power = ifo_power(self.ifo)
+        gPhase = power.finesse * 2/np.pi
+        cavity = arm_cavity(self.ifo)
+        n = noise.substratethermal.substrate_thermorefractive(
+            self.freq, self.ifo.Materials, cavity.wBeam_ITM, exact=True)
+        return n * 2 / gPhase**2
 
 class ETLF(nb.Budget):
 
@@ -136,6 +151,7 @@ class ETLF(nb.Budget):
         CoatingThermoOptic,
         SubstrateBrownian,
         SubThermalElastic,
+        ITMThermoRefractive,
         ExcessGas,
     ]
 

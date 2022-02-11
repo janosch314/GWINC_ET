@@ -288,6 +288,7 @@ Materials:
     MirrorSigma: 0.167            # Kg/m^3; Poisson ratio (ref. 4)
     MassDensity: 2.2e3            # Kg/m^3; (ref. 4)
     MassAlpha: 3.9e-7             # 1/K; thermal expansion coeff. (ref. 4)
+    dndT: 8.5e-6
     MassCM: 739                   # J/Kg/K; specific heat (ref. 4)
     MassKappa: 1.38               # J/m/s/K; thermal conductivity (ref. 4)
     RefractiveIndex: 1.45         # mevans 25 Apr 2008
