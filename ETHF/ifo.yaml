@@ -303,7 +303,7 @@ Optics:
   Type: 'SignalRecycled'
   PhotoDetectorEfficiency: 0.97    # photo-detector quantum efficiency
   Loss: 37.5e-6                   # average per mirror power loss
-  BSLoss: 0.5e-3                  # power loss near beamsplitter
+  BSLoss: 1e-3                  # power loss near beamsplitter
   coupling: 1.0                   # mismatch btwn arms & SRC modes; used to
                                   # calculate an effective r_srm
   SubstrateAbsorption: 0.5e-4     # 1/m; bulk absorption coef (ref. 2)
@@ -348,7 +348,7 @@ Squeezer:
   # Parameters for frequency dependent squeezing
   FilterCavity:
      L: 300                        # cavity length
-     Te: 2e-6                      # end mirror trasmission
+     Te: 5e-6                      # end mirror trasmission
      Lrt: 30e-6                    # round-trip loss in the cavity
      Rot: 0                        # phase rotation after cavity
      fdetune: -30.457318               # detuning [Hz]

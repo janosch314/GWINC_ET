@@ -408,16 +408,16 @@ Squeezer:
 
   # Parameters for frequency dependent squeezing
   FilterCavity:
-    - L: 3000                        # cavity length
-      Te: 2e-6                      # end mirror trasmission
-      Lrt: 28e-6                    # round-trip loss in the cavity
+    - L: 1000                        # cavity length
+      Te: 5e-6                      # end mirror trasmission
+      Lrt: 15e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
       fdetune: -6.695223               # detuning [Hz]
-      Ti:  0.000368                    # input mirror trasmission [Power]
+      Ti:  0.00012265                 # input mirror trasmission [Power]
 
-    - L: 3000                       # cavity length
-      Te: 2e-6                      # end mirror trasmission
-      Lrt: 28e-6                    # round-trip loss in the cavity
+    - L: 1000                       # cavity length
+      Te: 5e-6                      # end mirror trasmission
+      Lrt: 15e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: 25.345230              # detuning [Hz]
-      Ti: 0.001432                     # input mirror trasmission [Power]
+      fdetune: 25.34523             # detuning [Hz]
+      Ti: 0.00047729                   # input mirror trasmission [Power]
