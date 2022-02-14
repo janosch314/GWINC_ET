@@ -283,7 +283,7 @@ Materials:
     MassCM: 0.276         # J/kg/K; specific heat (ioffe @ 10K)
     MassKappa: 1000       # W/(m*K); thermal conductivity (ioffe @ 10)
     RefractiveIndex: 3.45 # 3.38 * (1 + 4e-5 * T)   (ioffe)
-    dndT: 1e-6           # ~10K & 1550 nm, 5.8e-6 @ 30k: http://arxiv.org/abs/physics/0606168
+    dndT: 0.5e-6           # ~10K & 1550 nm, 5.8e-6 @ 30k: http://arxiv.org/abs/physics/0606168
     Temp: 10             # mirror temperature [K]
     ## parameters for semiconductor optics
     isSemiConductor: True     # we are doing semiconductor optics
@@ -299,13 +299,13 @@ Materials:
 ## Laser-------------------------------------------------------------------
 Laser:
   Wavelength: 1.550e-6            # m
-  Power: 3                      # W
+  Power: 1.85                      # W
 
 ## Optics------------------------------------------------------------------
 Optics:
   Type: 'SignalRecycled'
   PhotoDetectorEfficiency: 0.97    # photo-detector quantum efficiency
-  Loss: 37.5e-6                   # average per mirror power loss
+  Loss: 20e-6                   # average per mirror power loss
   BSLoss: 1e-3                  # power loss near beamsplitter
   coupling: 1.0                   # mismatch btwn arms & SRC modes; used to
                                   # calculate an effective r_srm
