@@ -321,7 +321,7 @@ Optics:
     CoatingThicknessLown: 0.27
     CoatingThicknessCap: 0.5
   PRM:
-    Transmittance: 0.046
+    Transmittance: 0.045
   SRM:
     Transmittance: 0.1
     CavityLength: 200              # m, ITM to SRM distance
@@ -351,5 +351,5 @@ Squeezer:
      Te: 5e-6                      # end mirror trasmission
      Lrt: 30e-6                    # round-trip loss in the cavity
      Rot: 0                        # phase rotation after cavity
-     fdetune: -30.457318               # detuning [Hz]
-     Ti:  0.00076667             # input mirror trasmission [Power]
+     fdetune: -30.2957               # detuning [Hz]
+     Ti:  0.0007627             # input mirror trasmission [Power]

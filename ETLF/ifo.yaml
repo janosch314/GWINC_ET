@@ -299,7 +299,7 @@ Materials:
 ## Laser-------------------------------------------------------------------
 Laser:
   Wavelength: 1.550e-6            # m
-  Power: 1.85                      # W
+  Power: 1.7                      # W
 
 ## Optics------------------------------------------------------------------
 Optics:
@@ -382,7 +382,7 @@ Optics:
 
 
   PRM:
-    Transmittance: 0.046
+    Transmittance: 0.026
   SRM:
     Transmittance: 0.2
     CavityLength: 200              # m, ITM to SRM distance
@@ -412,12 +412,12 @@ Squeezer:
       Te: 5e-6                      # end mirror trasmission
       Lrt: 15e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: -6.67865015               # detuning [Hz]
-      Ti:  0.00012269                 # input mirror trasmission [Power]
+      fdetune: -6.663358              # detuning [Hz]
+      Ti:  0.000121919                 # input mirror trasmission [Power]
 
     - L: 1000                       # cavity length
       Te: 5e-6                      # end mirror trasmission
       Lrt: 15e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: 25.3486768            # detuning [Hz]
-      Ti: 0.00047705                   # input mirror trasmission [Power]
+      fdetune: 25.3518            # detuning [Hz]
+      Ti: 0.000476824                   # input mirror trasmission [Power]
