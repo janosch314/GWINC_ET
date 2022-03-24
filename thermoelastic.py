@@ -38,7 +38,7 @@ def substratethermoelastic(f, materials, wBeam):
     Temp = materials.Substrate.Temp # temperature
     kBT = const.kB * materials.Substrate.Temp
     
-    wc=2*kappa/(rho*CM*wBeam**2)
+    wc=kappa/(rho*CM*wBeam**2)
     
     Ome=2*pi*f/wc
 
