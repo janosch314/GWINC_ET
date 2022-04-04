@@ -39,7 +39,7 @@ class SusThermal(nb.Noise):
         color='#0d75f8',
         )
     def calc(self):
-        _,noise = STNRmodal(self.freq, self.ifo.Suspension, self.ifo)
+        noise,_ = STNRmodal(self.freq, self.ifo.Suspension, self.ifo)
         violin = STNViol(self.freq, self.ifo.Suspension, self.ifo)
         return (noise+violin).real
 
