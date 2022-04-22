@@ -10,27 +10,57 @@ def loginterp(x, y, f):
 ################################################################################
 ## Spectrum data
 ################################################################################
-def spectrum_bodywave(f):
-    return (5 * gwinc.noise.seismic.seismic_ground_NLNM(f))**2
+def spectrum_bodywave(f,Seismic):
+    dataSosEnattos = np.loadtxt("acoustic_spectra/bodywave_spectrum_SosEnattos.txt")
+    dataSosTerziet = np.loadtxt("acoustic_spectra/bodywave_spectrum_Terziet.txt")
+    
+    if Seismic.Site=='ET':
+        bodywave=(5 * gwinc.noise.seismic.seismic_ground_NLNM(f))**2
+    elif Seismic.Site =='SosEnattos':
+        bodywave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+    elif Seismic.Site =='Terziet':
+        bodywave=loginterp(dataSosTerziet.T[0],dataSosTerziet.T[1],f)
+    return bodywave
 
-def spectrum_rayleigh_horizontal(f):
-    return (10**(
+def spectrum_rayleigh_horizontal(f,Seismic):
+    dataSosEnattos = np.loadtxt("acoustic_spectra/rwave_spectrum_SosEnattos.txt")
+    dataTerziet = np.loadtxt("acoustic_spectra/rwave_spectrum_Terziet.txt")
+    
+    if Seismic.Site=='ET':
+        rayleighwave=(10**(
             0.5 * (
                 np.log10(gwinc.noise.seismic.seismic_ground_NLNM(f))
                 + np.log10(gwinc.noise.seismic.seismic_ground_NHNM(f))
                 )
             )
             )**2
+    elif Seismic.Site=='SosEnattos':
+        rayleighwave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+        
+    elif Seismic.Site=='Terziet':
+        rayleighwave=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
+    return rayleighwave
 
-def spectrum_rayleigh_vertical(f):
-    return spectrum_rayleigh_horizontal(f)
 
-def spectrum_rayleigh_tilt(f):
-    return 2 * np.pi * f / spectrum_rayleigh_dispersion(f) * spectrum_rayleigh_vertical(f)
+def spectrum_rayleigh_vertical(f,Seismic):
+    return spectrum_rayleigh_horizontal(f,Seismic)
+
+def spectrum_rayleigh_tilt(f,Seismic):
+    return 2 * np.pi * f / spectrum_rayleigh_dispersion(f,Seismic) * spectrum_rayleigh_vertical(f,Seismic)
 
 
-def spectrum_rayleigh_dispersion(f):
-    return 2000 * np.exp(-f/4) + 300  # Rayleigh wave dispersion (eqn. 1)
+def spectrum_rayleigh_dispersion(f,Seismic):
+    dataSosEnattos = np.loadtxt("acoustic_spectra/rwave_dispersion_SosEnattos.txt")
+    dataTerziet = np.loadtxt("acoustic_spectra/rwave_dispersion_Terziet.txt")
+
+    if Seismic.Site=='ET':
+        rayleigh_dispersion=2000 * np.exp(-f/4) + 300
+    elif Seismic.Site=='SosEnattos':
+        rayleigh_dispersion=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+    elif Seismic.Site=='Terziet':
+        rayleigh_dispersion=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
+
+    return rayleigh_dispersion  # Rayleigh wave dispersion (eqn. 1)
 
 
 def isolation_H2H(f):
@@ -59,14 +89,14 @@ def spectrum_pressure_cavern(f):
 ## Noise sources
 ## All equation numbers refer to those in https://arxiv.org/abs/2003.03434
 ################################################################################
-def body_wave(f):
+def body_wave(f,Seismic):
     p = 1/3  # Fraction of body wave spectral density caused by compressional waves
     rock_density = 3e3  # kg / m^3
-    Sh =  (4/3 * np.pi * constants.G * rock_density)**2 * (3*p + 1) * spectrum_bodywave(f) * 4 / (2*np.pi*f)**4  # Equation 7
+    Sh =  (4/3 * np.pi * constants.G * rock_density)**2 * (3*p + 1) * spectrum_bodywave(f,Seismic) * 4 / (2*np.pi*f)**4  # Equation 7
     return np.sqrt(Sh)
 
-def rayleigh_wave(f):
-    vr = spectrum_rayleigh_dispersion(f)
+def rayleigh_wave(f,Seismic):
+    vr = spectrum_rayleigh_dispersion(f,Seismic)
     vs = 1/np.sqrt(0.8453) * vr  # Shear wave dispersion TODO: pulled from slide 16 of http://rses.anu.edu.au/~nick/teachdoc/lecture5.pdf, find better source
     vp = 2 * vr  # TODO: quick guess
     kr = 2 * np.pi * f / vr
@@ -83,12 +113,12 @@ def rayleigh_wave(f):
     sh = -kr * (1 + zeta) * np.exp(-kr * h)  # eq. 4
     bh = 2/3 * (2 * kr * np.exp(-qp * h) + zeta * qs * np.exp(-qs * h))  # eq. 5
     R = np.abs((sh + bh) / r0)**2  # eq. 6
-    SR = (2 * np.pi / np.sqrt(2) * gamma * constants.G * density_surface)**2 * R * spectrum_rayleigh_vertical(f) * 4 / (2 * np.pi * f)**4  # Equation 2
+    SR = (2 * np.pi / np.sqrt(2) * gamma * constants.G * density_surface)**2 * R * spectrum_rayleigh_vertical(f,Seismic) * 4 / (2 * np.pi * f)**4  # Equation 2
 
     return np.sqrt(SR)
 
-def seismic_noise(f):
-    vr = spectrum_rayleigh_dispersion(f)
+def seismic_noise(f,Seismic):
+    vr = spectrum_rayleigh_dispersion(f,Seismic)
     vs = 1/np.sqrt(0.8453) * vr  # Shear wave dispersion TODO: pulled from slide 16 of http://rses.anu.edu.au/~nick/teachdoc/lecture5.pdf, find better source
     vp = 2 * vr  # TODO: quick guess
     kr = 2 * np.pi * f / vr
@@ -107,9 +137,9 @@ def seismic_noise(f):
 
     return np.sqrt(
         (
-            (np.abs(xi_hor)**2 * spectrum_rayleigh_horizontal(f) + spectrum_bodywave(f)) * np.abs(isolation_H2H(f))**2
-            + (np.abs(xi_ver)**2 * spectrum_rayleigh_vertical(f) + spectrum_bodywave(f)) * np.abs(isolation_V2H(f))**2
-            + (np.abs(xi_ver)**2 * spectrum_rayleigh_tilt(f)) * np.abs(isolation_tilt2H(f))**2
+            (np.abs(xi_hor)**2 * spectrum_rayleigh_horizontal(f,Seismic) + spectrum_bodywave(f,Seismic)) * np.abs(isolation_H2H(f))**2
+            + (np.abs(xi_ver)**2 * spectrum_rayleigh_vertical(f,Seismic) + spectrum_bodywave(f,Seismic)) * np.abs(isolation_V2H(f))**2
+            + (np.abs(xi_ver)**2 * spectrum_rayleigh_tilt(f,Seismic)) * np.abs(isolation_tilt2H(f))**2
         )
         * 4
     )

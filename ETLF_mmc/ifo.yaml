@@ -88,7 +88,7 @@ TCS:
   SRCloss: 0.00
 
 Seismic:
-  Site: 'ET_LF'                     # LHO or LLO (only used for Newtonian noise)
+  Site: 'SosEnattos'                     # LHO or LLO (only used for Newtonian noise)
   KneeFrequency: 1               # Hz; freq where 'flat' noise rolls off
   LowFrequencyLevel: 5e-10         # m/rtHz; seismic noise level below f_knee
   Gamma: 100                      # abruptness of change at f_knee

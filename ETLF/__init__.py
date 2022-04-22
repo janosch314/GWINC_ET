@@ -39,7 +39,7 @@ class SusThermal(nb.Noise):
         color='#0d75f8',
         )
     def calc(self):
-        noise,_ = STNRmodal(self.freq, self.ifo.Suspension, self.ifo)
+        _,noise = STNRmodal(self.freq, self.ifo.Suspension, self.ifo)
         violin = STNViol(self.freq, self.ifo.Suspension, self.ifo)
         return (noise+violin).real
 
@@ -63,7 +63,7 @@ class Seismic(nb.Noise):
         color='#855700'
         )
     def calc(self):
-        noise = seismic_noise(self.freq)**2
+        noise = seismic_noise(self.freq,self.ifo.Seismic)**2
         return noise
 
 class NewtonianBodyWave(nb.Noise):
@@ -71,7 +71,7 @@ class NewtonianBodyWave(nb.Noise):
         label = 'Body Wave',
         )
     def calc(self):
-        noise = body_wave(self.freq)**2
+        noise = body_wave(self.freq,self.ifo.Seismic)**2
         return noise / newtonian_mitigation_factor**2
 
 class NewtonianRayleighWave(nb.Noise):
@@ -79,7 +79,7 @@ class NewtonianRayleighWave(nb.Noise):
         label = 'Rayleigh Wave',
         )
     def calc(self):
-        noise = rayleigh_wave(self.freq)**2
+        noise = rayleigh_wave(self.freq,self.ifo.Seismic)**2
         return noise / newtonian_mitigation_factor**2
 
 class NewtonianCavern(nb.Noise):
@@ -95,7 +95,7 @@ class NewtonianAtmospheric(nb.Noise):
         label = 'Atmospheric',
         )
     def calc(self):
-        noise = atmospheric_noise(self.freq)**2
+        noise = atmospheric_noise(self.freq,)**2
         return noise / newtonian_mitigation_factor**2
 
 class NewtonianNoise(nb.Budget):
