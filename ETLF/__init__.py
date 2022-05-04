@@ -87,7 +87,7 @@ class NewtonianCavern(nb.Noise):
         label = 'Cavern',
         )
     def calc(self):
-        noise = cavern_noise(self.freq)**2
+        noise = cavern_noise(self.freq,self.ifo.Seismic)**2
         return noise / newtonian_mitigation_factor**2
 
 class NewtonianAtmospheric(nb.Noise):
@@ -95,7 +95,7 @@ class NewtonianAtmospheric(nb.Noise):
         label = 'Atmospheric',
         )
     def calc(self):
-        noise = atmospheric_noise(self.freq,)**2
+        noise = atmospheric_noise(self.freq,self.ifo.Seismic)**2
         return noise / newtonian_mitigation_factor**2
 
 class NewtonianNoise(nb.Budget):

@@ -5,7 +5,8 @@ from scipy.interpolate import interp1d
 
 # Interpolate spectrum data in log-space
 def loginterp(x, y, f):
-    return 10**interp1d(np.log10(x), np.log10(y), kind="slinear", fill_value="extrapolate")(np.log10(f))
+    return np.power(10, np.interp(np.log10(f),np.log10(x),np.log10(y)))
+    #10**interp1d(np.log10(x), np.log10(y), kind="slinear", fill_value="extrapolate")(np.log10(f))
 
 ################################################################################
 ## Spectrum data
@@ -90,14 +91,14 @@ def spectrum_pressure_cavern(f):
 ## All equation numbers refer to those in https://arxiv.org/abs/2003.03434
 ################################################################################
 def body_wave(f,Seismic):
-    p = 1/3  # Fraction of body wave spectral density caused by compressional waves
+    p = 0.33  # Fraction of body wave spectral density caused by compressional waves
     rock_density = 3e3  # kg / m^3
     Sh =  (4/3 * np.pi * constants.G * rock_density)**2 * (3*p + 1) * spectrum_bodywave(f,Seismic) * 4 / (2*np.pi*f)**4  # Equation 7
     return np.sqrt(Sh)
 
 def rayleigh_wave(f,Seismic):
     vr = spectrum_rayleigh_dispersion(f,Seismic)
-    vs = 1/np.sqrt(0.8453) * vr  # Shear wave dispersion TODO: pulled from slide 16 of http://rses.anu.edu.au/~nick/teachdoc/lecture5.pdf, find better source
+    vs = 1.1 * vr  # Shear wave dispersion TODO: pulled from slide 16 of http://rses.anu.edu.au/~nick/teachdoc/lecture5.pdf, find better source
     vp = 2 * vr  # TODO: quick guess
     kr = 2 * np.pi * f / vr
 
@@ -105,7 +106,7 @@ def rayleigh_wave(f,Seismic):
     qs = 2 * np.pi * f * np.sqrt(1 / vr**2 - 1 / vs**2)
     zeta = np.sqrt(qp / qs)
 
-    h = 300  # Detector depth in m
+    h = -Seismic.Height  # Detector depth in m
     gamma = 0.8  # Factor quantifying cancellation of newtonian noise
     density_surface = 2e3  # Density of surface in kg / m^3
 
@@ -119,7 +120,7 @@ def rayleigh_wave(f,Seismic):
 
 def seismic_noise(f,Seismic):
     vr = spectrum_rayleigh_dispersion(f,Seismic)
-    vs = 1/np.sqrt(0.8453) * vr  # Shear wave dispersion TODO: pulled from slide 16 of http://rses.anu.edu.au/~nick/teachdoc/lecture5.pdf, find better source
+    vs = 1.1 * vr  # Shear wave dispersion TODO: pulled from slide 16 of http://rses.anu.edu.au/~nick/teachdoc/lecture5.pdf, find better source
     vp = 2 * vr  # TODO: quick guess
     kr = 2 * np.pi * f / vr
 
@@ -127,7 +128,7 @@ def seismic_noise(f,Seismic):
     qs = 2 * np.pi * f * np.sqrt(1 / vr**2 - 1 / vs**2)
     zeta = np.sqrt(qp / qs)
 
-    h = 300  # Detector depth
+    h = -Seismic.Height  # Detector depth
 
     xi0_ver = qp - zeta * kr
     xi0_hor = kr - zeta * qs
@@ -144,24 +145,24 @@ def seismic_noise(f,Seismic):
         * 4
     )
 
-def atmospheric_noise(f):
+def atmospheric_noise(f,Seismic):
     cs = 340  # Speed of sound in m/s
     rho0 = 1.225  # Density of air in kg/m^3
     p0 = 101325  # Air pressure in Pa
     gamma = 1.4  # Adiabatic coefficient of air
-    h = 300  # Depth underground in m
+    h = -Seismic.Height  # Depth underground in m
     coupling = 3 / (4 * np.pi * f * h / cs)**4  # Approximate isotropically averaged coupling coefficient (eqn. 12)
 
     return np.sqrt((2 * cs * constants.G * rho0 * spectrum_pressure_atmosphere(f) / (p0 * gamma * f))**2 * coupling * 4 / (2 * np.pi * f)**4) # Eqn. 10
 
-def cavern_noise(f):
+def cavern_noise(f,Seismic):
     cs = 340  # Speed of sound in m/s
     rho0 = 1.225  # Density of air in kg/m^3
     p0 = 101325  # Air pressure in Pa
 
     gamma = 1.4  # Adiabatic coefficient of air
-    h = 300  # Depth underground in m
-    R = 15  # Cavern radius in m
+    h = -Seismic.Height  # Depth underground in m
+    R = Seismic.CavernR  # Cavern radius in m
     coupling = 1/3 * (1 - np.sinc(2 * f * R / cs))**2  # Eqn. 13 without the pi as numpy defines sinc(x) = sin(pi * x) / (pi * x)
 
     return np.sqrt((2 * cs * constants.G * rho0 * spectrum_pressure_cavern(f) / (p0 * gamma * f))**2 * coupling * 4 / (2 * np.pi * f)**4)  # Eqn. 13

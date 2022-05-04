@@ -98,6 +98,8 @@ Seismic:
   Omicron: 1                     # Feedforward cancellation factor
   TestMassHeight: 1.5             # m
   RayleighWaveSpeed: 250          # m/s
+  Height: -250                    #Mirror height
+  CavernR: 15                     #Cavern radius
 
 Suspension:
   Optcyl: 0
