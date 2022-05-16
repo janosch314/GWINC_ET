@@ -13,7 +13,7 @@ from envnoise import (
         seismic_noise
         )
 
-newtonian_mitigation_factor = 3
+#newtonian_mitigation_factor = 3
 
 class QuantumVacuum(nb.Budget):
     """Quantum Vacuum
@@ -71,32 +71,32 @@ class NewtonianBodyWave(nb.Noise):
         label = 'Body Wave',
         )
     def calc(self):
-        noise = body_wave(self.freq,self.ifo.Seismic)**2
-        return noise / newtonian_mitigation_factor**2
+        noise = body_wave(self.freq,self.ifo.Seismic)**2/ self.ifo.Seismic.Omicron**2
+        return noise
 
 class NewtonianRayleighWave(nb.Noise):
     style = dict(
         label = 'Rayleigh Wave',
         )
     def calc(self):
-        noise = rayleigh_wave(self.freq,self.ifo.Seismic)**2
-        return noise / newtonian_mitigation_factor**2
+        noise = rayleigh_wave(self.freq,self.ifo.Seismic)**2/ self.ifo.Seismic.Omicron**2
+        return noise
 
 class NewtonianCavern(nb.Noise):
     style = dict(
         label = 'Cavern',
         )
     def calc(self):
-        noise = cavern_noise(self.freq,self.ifo.Seismic)**2
-        return noise / newtonian_mitigation_factor**2
+        noise = cavern_noise(self.freq,self.ifo.Seismic)**2/ self.ifo.Seismic.Omicron**2
+        return noise
 
 class NewtonianAtmospheric(nb.Noise):
     style = dict(
         label = 'Atmospheric',
         )
     def calc(self):
-        noise = atmospheric_noise(self.freq,self.ifo.Seismic)**2
-        return noise / newtonian_mitigation_factor**2
+        noise = atmospheric_noise(self.freq,self.ifo.Seismic)**2/ self.ifo.Seismic.Omicron**2
+        return noise
 
 class NewtonianNoise(nb.Budget):
     """Newtonian"""

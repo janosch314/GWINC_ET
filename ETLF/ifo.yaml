@@ -95,7 +95,7 @@ Seismic:
   Rho: 2.3e3                      # kg/m^3; density of the ground nearby
   Beta: 0.6                       # quiet times beta: 0.35-0.60
                                   # noisy times beta: 0.15-1.4
-  Omicron: 1                     # Feedforward cancellation factor
+  Omicron: 3                     # Feedforward cancellation factor
   TestMassHeight: 1.5             # m
   RayleighWaveSpeed: 250          # m/s
   Height: -250                    #Mirror height
