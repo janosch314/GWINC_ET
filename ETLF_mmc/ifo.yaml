@@ -413,7 +413,7 @@ Optics:
 #   OptimalOptimal = optimal squeeze angle, assuming optimal readout phase
 Squeezer:
   Type: 'Freq Dependent'
-  AmplitudedB: 15                 # SQZ amplitude [dB]
+  AmplitudedB: 10                 # SQZ amplitude [dB]
   InjectionLoss: 0.02            # power loss to sqz
   SQZAngle: -0.37                     # SQZ phase [radians]
   LOAngleRMS: 1e-6               # quadrature noise [radians]
