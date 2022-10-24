@@ -35,25 +35,25 @@ Infrastructure:
   ResidualGas:
     H2:
       BeamtubePressure: 2.0e-8      # Pa
-      ChamberPressure: 2.0e-7       # Pa
+      ChamberPressure: 2.0e-8       # Pa
       mass: 3.35e-27                # kg; Mass of H_2 (ref. 10)
       polarizability: 7.87e-31      # m^3;
 
     N2:
       BeamtubePressure: 5.0e-10
-      ChamberPressure: 5.0e-8
+      ChamberPressure: 5.0e-10
       mass: 4.65e-26
       polarizability: 1.71e-30
 
     H2O:
       BeamtubePressure: 1.0e-9
-      ChamberPressure: 1.0e-7
+      ChamberPressure: 1.0e-9
       mass: 2.99e-26
       polarizability: 1.50e-30
 
     O2:
       BeamtubePressure: 5.0e-10
-      ChamberPressure: 5.0e-8
+      ChamberPressure: 5.0e-10
       mass: 5.31e-26
       polarizability: 1.56e-30
 
@@ -87,18 +87,18 @@ TCS:
   SRCloss: 0.00
 
 Seismic:
-  Site: 'ET_HF'                     # LHO or LLO (only used for Newtonian noise)
+  Site: 'SosEnattos90'                     # LHO or LLO (only used for Newtonian noise)
   KneeFrequency: 1               # Hz; freq where 'flat' noise rolls off
   LowFrequencyLevel: 5e-10         # m/rtHz; seismic noise level below f_knee
   Gamma: 100                      # abruptness of change at f_knee
   Rho: 2.3e3                      # kg/m^3; density of the ground nearby
   Beta: 0.6                       # quiet times beta: 0.35-0.60
                                   # noisy times beta: 0.15-1.4
-  Omicron: 1                      # Feedforward cancellation factor
+  Omicron: 4                      # Feedforward cancellation factor
   TestMassHeight: 1.5             # m
   RayleighWaveSpeed: 250          # m/s
   Height: -250                    #Mirror height
-  CavernR: 15                     #Cavern radius
+  CavernR: 12.5                     #Cavern radius
 
 Suspension:
   Optcyl: 0
@@ -113,11 +113,11 @@ Suspension:
     Rho   : 2.2e3                 # Kg/m^3;
     C     : 772                   # J/Kg/K;
     K     : 1.38                  # W/m/kg;
-    Alpha : 5.1e-7 #3.9e-7                # 1/K;
-    dlnEdT: 1.86e-4 #1.52e-4               # (1/K), dlnE/dT
-    Phi   : 3.3e-8 #4.1e-10               # from G Harry e-mail to NAR 27April06 dimensionless units
-    Y     : 7.29e10   #7.2e10              # Pa; Youngs Modulus
-    Dissdepth: 2.0e-4 #1.5e-2             # from G Harry e-mail to NAR 27April06
+    Alpha : 3.9e-7                # 1/K;
+    dlnEdT: 1.52e-4               # (1/K), dlnE/dT
+    Phi   : 4.1e-10               # from G Harry e-mail to NAR 27April06 dimensionless units
+    Y     : 7.2e10   #7.2e10              # Pa; Youngs Modulus
+    Dissdepth: 1.5e-2 #1.5e-2             # from G Harry e-mail to NAR 27April06
 
   C70Steel:
     Rho: 7800
@@ -176,18 +176,18 @@ Suspension:
       # in suspQuad, so including it here would double count)
       Temp: 290
       WireMaterial : 'Silica'
-      Length: 2.0               # m
+      Length: 2               # m
       Dilution: .nan              #
       K: 1.4                     # N/m; vertical spring constant
-      WireRadius: 4e-4
-      WireDiameter: 8e-4         # as in Virgo GWINC
+      WireRadius: 350e-6
+      WireDiameter: 700e-6         # as in Virgo GWINC
       Blade: .nan                # blade thickness
       NWires: 4
-      WireDiameter1: 800e-6
-      WireDiameter2: 300e-6
-      WireDiameter3: 800e-6
+      WireDiameter1: 1838.3307e-6
+      WireDiameter2: 700e-6
+      WireDiameter3: 1838.3307e-6
       Length1: 0.05
-      Length2: 0.6
+      Length2: 2
       Length3: 0.05
       Qvh: 1e20
       Qvv: 1e20
@@ -196,12 +196,12 @@ Suspension:
     # Mirror reaction mass
     - Mass: 200
       Temp: 290
-      WireMaterial : 'C85Steel'
-      Length: 2.0
-      Dilution: 106
+      WireMaterial : 'Silica'
+      Length: 2
+      Dilution: .nan
       K: 50
-      WireRadius: 0.5e-3
-      WireDiameter: 1e-3
+      WireRadius: 350e-6
+      WireDiameter: 700e-6
       Blade: .nan
       NWires: 4
       Qvh: 1e20
@@ -209,18 +209,18 @@ Suspension:
 
     # Stage3
     # Marionetta
-    - Mass: 400
+    - Mass: 200
       Temp: 290
-      WireMaterial : 'MaragingSteel'
+      WireMaterial : 'Silica'
       Length: 2.0
-      Dilution: 80
+      Dilution: .nan
       K: 20
-      WireRadius: 1.125e-3
-      WireDiameter: 2.25e-3
+      WireRadius: 1e-3
+      WireDiameter: 2e-3
       Blade: 4600e-6
       NWires: 1
-      Qvh: 1e6
-      Qvv: 1e6
+      Qvh: 1e20
+      Qvv: 1e20
 
     # Stage4
     # Marionetta reaction mass

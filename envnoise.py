@@ -13,14 +13,18 @@ def loginterp(x, y, f):
 ################################################################################
 def spectrum_bodywave(f,Seismic):
     dataSosEnattos = np.loadtxt("acoustic_spectra/bodywave_spectrum_SosEnattos.txt")
-    dataSosTerziet = np.loadtxt("acoustic_spectra/bodywave_spectrum_Terziet.txt")
+    dataTerziet = np.loadtxt("acoustic_spectra/bodywave_spectrum_Terziet.txt")
     
     if Seismic.Site=='ET':
         bodywave=(5 * gwinc.noise.seismic.seismic_ground_NLNM(f))**2
-    elif Seismic.Site =='SosEnattos':
+    elif Seismic.Site =='SosEnattos10':
         bodywave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+    elif Seismic.Site =='SosEnattos50':
+        bodywave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[2],f)
+    elif Seismic.Site =='SosEnattos90':
+        bodywave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[3],f)
     elif Seismic.Site =='Terziet':
-        bodywave=loginterp(dataSosTerziet.T[0],dataSosTerziet.T[1],f)
+        bodywave=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
     return bodywave
 
 def spectrum_rayleigh_horizontal(f,Seismic):
@@ -35,8 +39,13 @@ def spectrum_rayleigh_horizontal(f,Seismic):
                 )
             )
             )**2
-    elif Seismic.Site=='SosEnattos':
+    elif Seismic.Site=='SosEnattos10':
         rayleighwave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+    elif Seismic.Site=='SosEnattos50':
+        rayleighwave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+    elif Seismic.Site=='SosEnattos90':
+        rayleighwave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+
         
     elif Seismic.Site=='Terziet':
         rayleighwave=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
@@ -49,14 +58,17 @@ def spectrum_rayleigh_vertical(f,Seismic):
 def spectrum_rayleigh_tilt(f,Seismic):
     return 2 * np.pi * f / spectrum_rayleigh_dispersion(f,Seismic) * spectrum_rayleigh_vertical(f,Seismic)
 
-
 def spectrum_rayleigh_dispersion(f,Seismic):
     dataSosEnattos = np.loadtxt("acoustic_spectra/rwave_dispersion_SosEnattos.txt")
     dataTerziet = np.loadtxt("acoustic_spectra/rwave_dispersion_Terziet.txt")
 
     if Seismic.Site=='ET':
         rayleigh_dispersion=2000 * np.exp(-f/4) + 300
-    elif Seismic.Site=='SosEnattos':
+    elif Seismic.Site=='SosEnattos10':
+        rayleigh_dispersion=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+    elif Seismic.Site=='SosEnattos50':
+        rayleigh_dispersion=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
+    elif Seismic.Site=='SosEnattos90':
         rayleigh_dispersion=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
     elif Seismic.Site=='Terziet':
         rayleigh_dispersion=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
