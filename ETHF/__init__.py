@@ -11,7 +11,8 @@ from envnoise import (
         cavern_noise,
         body_wave,
         rayleigh_wave,
-        seismic_noise
+        seismic_noise,
+        HFseismic_noise
         )
 #newtonian_mitigation_factor = 3
 
@@ -132,12 +133,22 @@ class Seismic(nb.Noise):
         color='#855700'
         )
     def calc(self):
-        noise = seismic_noise(self.freq,self.ifo.Seismic)**2
+        noise = HFseismic_noise(self.freq,self.ifo)
         return noise
+  
+#class Seismic(nb.Noise):
+  #  style = dict(
+  #      label = 'Seismic',
+   #     color='#855700'
+   #     )
+  #  def calc(self):
+  #      noise = seismic_noise(self.freq,self.ifo.Seismic)**2
+  #      return noise
         
 class NewtonianBodyWave(nb.Noise):
     style = dict(
         label = 'Body Wave',
+        color='#AAFF32'
         )
     def calc(self):
         noise = body_wave(self.freq,self.ifo.Seismic)**2
@@ -146,6 +157,7 @@ class NewtonianBodyWave(nb.Noise):
 class NewtonianRayleighWave(nb.Noise):
     style = dict(
         label = 'Rayleigh Wave',
+        color='#C20078'
         )
     def calc(self):
         noise = rayleigh_wave(self.freq,self.ifo.Seismic)**2
@@ -154,6 +166,7 @@ class NewtonianRayleighWave(nb.Noise):
 class NewtonianCavern(nb.Noise):
     style = dict(
         label = 'Cavern',
+        color='#650021'
         )
     def calc(self):
         noise = cavern_noise(self.freq,self.ifo.Seismic)**2
@@ -162,6 +175,7 @@ class NewtonianCavern(nb.Noise):
 class NewtonianAtmospheric(nb.Noise):
     style = dict(
         label = 'Atmospheric',
+        color='#01153E'
         )
     def calc(self):
         noise = atmospheric_noise(self.freq,self.ifo.Seismic)**2
@@ -194,8 +208,7 @@ class ETHF(nb.Budget):
         CoatingThermoOptic,
         SubstrateBrownian,
         SubstrateThermoElastic,
-        ExcessGas,
-        ITMThermoRefractive
+        ExcessGas
     ]
 
     calibrations = [

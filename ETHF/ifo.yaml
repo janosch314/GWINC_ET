@@ -87,21 +87,21 @@ TCS:
   SRCloss: 0.00
 
 Seismic:
-  Site: 'SosEnattos90'                     # LHO or LLO (only used for Newtonian noise)
+  Site: 'SosEnattos'                     # LHO or LLO (only used for Newtonian noise)
   KneeFrequency: 1               # Hz; freq where 'flat' noise rolls off
   LowFrequencyLevel: 5e-10         # m/rtHz; seismic noise level below f_knee
   Gamma: 100                      # abruptness of change at f_knee
   Rho: 2.3e3                      # kg/m^3; density of the ground nearby
   Beta: 0.6                       # quiet times beta: 0.35-0.60
                                   # noisy times beta: 0.15-1.4
-  Omicron: 4                      # Feedforward cancellation factor
+  Omicron: 1                      # Feedforward cancellation factor
   TestMassHeight: 1.5             # m
   RayleighWaveSpeed: 250          # m/s
   Height: -250                    #Mirror height
   CavernR: 12.5                     #Cavern radius
 
 Suspension:
-  Optcyl: 0
+  Optcyl: 1
   Type: 'Quad'
   FiberType: 'Ribbon'
   BreakStress: 750e6              # Pa; ref. K. Strain
@@ -179,15 +179,15 @@ Suspension:
       Length: 2               # m
       Dilution: .nan              #
       K: 1.4                     # N/m; vertical spring constant
-      WireRadius: 350e-6
-      WireDiameter: 700e-6         # as in Virgo GWINC
+      WireRadius: 425e-6
+      WireDiameter: 850e-6         # as in Virgo GWINC
       Blade: .nan                # blade thickness
       NWires: 4
-      WireDiameter1: 1838.3307e-6
-      WireDiameter2: 700e-6
-      WireDiameter3: 1838.3307e-6
+      WireDiameter1: 1800e-6
+      WireDiameter2: 850e-6
+      WireDiameter3: 1800e-6
       Length1: 0.05
-      Length2: 2
+      Length2: 1.2
       Length3: 0.05
       Qvh: 1e20
       Qvv: 1e20
@@ -197,11 +197,11 @@ Suspension:
     - Mass: 200
       Temp: 290
       WireMaterial : 'Silica'
-      Length: 2
+      Length: 1.2
       Dilution: .nan
       K: 50
-      WireRadius: 350e-6
-      WireDiameter: 700e-6
+      WireRadius: 425e-6
+      WireDiameter: 850e-6
       Blade: .nan
       NWires: 4
       Qvh: 1e20
@@ -212,11 +212,11 @@ Suspension:
     - Mass: 200
       Temp: 290
       WireMaterial : 'Silica'
-      Length: 2.0
+      Length: 1
       Dilution: .nan
       K: 20
-      WireRadius: 1e-3
-      WireDiameter: 2e-3
+      WireRadius: 1.2e-3
+      WireDiameter: 2.4e-3
       Blade: 4600e-6
       NWires: 1
       Qvh: 1e20
@@ -325,8 +325,8 @@ Optics:
   PRM:
     Transmittance: 0.045
   SRM:
-    Transmittance: 0.1
-    CavityLength: 200              # m, ITM to SRM distance
+    Transmittance: 0.05
+    CavityLength: 100              # m, ITM to SRM distance
     Tunephase: 0                # SEC tuning
 
   Curvature:                      # ROC
@@ -342,16 +342,16 @@ Optics:
 #   OptimalOptimal = optimal squeeze angle, assuming optimal readout phase
 Squeezer:
   Type: 'Freq Dependent'
-  AmplitudedB: 15                 # SQZ amplitude [dB]
-  InjectionLoss: 0.02             # power loss to sqz
+  AmplitudedB: 18                 # SQZ amplitude [dB]
+  InjectionLoss: 0.03             # power loss to sqz
   SQZAngle: 0                     # SQZ phase [radians]
-  LOAngleRMS: 1e-6               # quadrature noise [radians]
+  LOAngleRMS: 10e-3               # quadrature noise [radians]
 
   # Parameters for frequency dependent squeezing
   FilterCavity:
-     L: 300                        # cavity length
+     L: 1000                        # cavity length
      Te: 5e-6                      # end mirror trasmission
-     Lrt: 30e-6                    # round-trip loss in the cavity
+     Lrt: 40e-6                    # round-trip loss in the cavity
      Rot: 0                        # phase rotation after cavity
-     fdetune: -30.2956               # detuning [Hz]
-     Ti:  0.0007627             # input mirror trasmission [Power]
+     fdetune: -21.14795               # detuning [Hz]
+     Ti:  0.001773484             # input mirror trasmission [Power]

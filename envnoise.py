@@ -11,20 +11,23 @@ def loginterp(x, y, f):
 ################################################################################
 ## Spectrum data
 ################################################################################
+
+def HFseismic_noise(f,ifo):
+    dataHFseismic_noise = np.loadtxt("acoustic_spectra/HFSeismic.txt")
+    HFseismic=loginterp(dataHFseismic_noise.T[0],dataHFseismic_noise.T[1],f)
+    return HFseismic*10e3**2
+
 def spectrum_bodywave(f,Seismic):
     dataSosEnattos = np.loadtxt("acoustic_spectra/bodywave_spectrum_SosEnattos.txt")
     dataTerziet = np.loadtxt("acoustic_spectra/bodywave_spectrum_Terziet.txt")
     
     if Seismic.Site=='ET':
         bodywave=(5 * gwinc.noise.seismic.seismic_ground_NLNM(f))**2
-    elif Seismic.Site =='SosEnattos10':
-        bodywave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
-    elif Seismic.Site =='SosEnattos50':
-        bodywave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[2],f)
-    elif Seismic.Site =='SosEnattos90':
+    elif Seismic.Site =='SosEnattos':
         bodywave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[3],f)
     elif Seismic.Site =='Terziet':
-        bodywave=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
+        bodywave=loginterp(dataTerziet.T[0],dataTerziet.T[3],f)
+        
     return bodywave
 
 def spectrum_rayleigh_horizontal(f,Seismic):
@@ -39,16 +42,11 @@ def spectrum_rayleigh_horizontal(f,Seismic):
                 )
             )
             )**2
-    elif Seismic.Site=='SosEnattos10':
+    elif Seismic.Site=='SosEnattos':
         rayleighwave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
-    elif Seismic.Site=='SosEnattos50':
-        rayleighwave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
-    elif Seismic.Site=='SosEnattos90':
-        rayleighwave=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
-
-        
     elif Seismic.Site=='Terziet':
         rayleighwave=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
+        
     return rayleighwave
 
 
@@ -64,11 +62,7 @@ def spectrum_rayleigh_dispersion(f,Seismic):
 
     if Seismic.Site=='ET':
         rayleigh_dispersion=2000 * np.exp(-f/4) + 300
-    elif Seismic.Site=='SosEnattos10':
-        rayleigh_dispersion=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
-    elif Seismic.Site=='SosEnattos50':
-        rayleigh_dispersion=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
-    elif Seismic.Site=='SosEnattos90':
+    elif Seismic.Site=='SosEnattos':
         rayleigh_dispersion=loginterp(dataSosEnattos.T[0],dataSosEnattos.T[1],f)
     elif Seismic.Site=='Terziet':
         rayleigh_dispersion=loginterp(dataTerziet.T[0],dataTerziet.T[1],f)
@@ -147,15 +141,15 @@ def seismic_noise(f,Seismic):
 
     xi_hor = (kr * np.exp(-qp * h) - zeta * qs * np.exp(-qs * h)) / xi0_hor
     xi_ver = 1j*(qp * np.exp(-qp * h) - zeta * kr * np.exp(-qs * h)) / xi0_ver
-
-    return np.sqrt(
-        (
-            (np.abs(xi_hor)**2 * spectrum_rayleigh_horizontal(f,Seismic) + spectrum_bodywave(f,Seismic)) * np.abs(isolation_H2H(f))**2
-            + (np.abs(xi_ver)**2 * spectrum_rayleigh_vertical(f,Seismic) + spectrum_bodywave(f,Seismic)) * np.abs(isolation_V2H(f))**2
-            + (np.abs(xi_ver)**2 * spectrum_rayleigh_tilt(f,Seismic)) * np.abs(isolation_tilt2H(f))**2
-        )
-        * 4
-    )
+    
+    S_HR=(np.abs(xi_hor)**2 * spectrum_rayleigh_horizontal(f,Seismic) ) * np.abs(isolation_H2H(f))**2*4
+    S_HB=(spectrum_bodywave(f,Seismic)) * np.abs(isolation_H2H(f))**2*4
+    S_VR=(np.abs(xi_ver)**2 * spectrum_rayleigh_vertical(f,Seismic) ) * np.abs(isolation_V2H(f))**2*4
+    S_VB=( spectrum_bodywave(f,Seismic)) * np.abs(isolation_V2H(f))**2*4
+    S_TR=(np.abs(xi_ver)**2 * spectrum_rayleigh_tilt(f,Seismic)) * np.abs(isolation_tilt2H(f))**2*4
+    
+    return S_HR,S_HB,S_VR,S_VB,S_TR
+        
 
 def atmospheric_noise(f,Seismic):
     cs = 340  # Speed of sound in m/s

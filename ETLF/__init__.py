@@ -127,18 +127,77 @@ class SubThermalElastic(nb.Noise):
             self.freq, self.ifo.Materials, cavity.wBeam_ETM)
         return (nITM + nETM) * 2
         
-class Seismic(nb.Noise):
+class SeismicHR(nb.Noise):
+    style = dict(
+        label = 'Rayleigh wave Horizental',
+        color='#800000',
+        linestyle='--'
+        )
+    def calc(self):
+        noiseHR,_,_,_,_ = seismic_noise(self.freq,self.ifo.Seismic)
+        return noiseHR
+        
+class SeismicHB(nb.Noise):
+    style = dict(
+        label = 'Body wave Horizental',
+        color='#000080',
+        linestyle='--'
+        )
+    def calc(self):
+        _,noiseHB,_,_,_ = seismic_noise(self.freq,self.ifo.Seismic)
+        return noiseHB
+        
+class SeismicVR(nb.Noise):
+    style = dict(
+        label = 'Rayleigh wave Vertical',
+        color='#808000',
+        linestyle='--'
+        )
+    def calc(self):
+        _,_,noiseVR,_,_ = seismic_noise(self.freq,self.ifo.Seismic)
+        return noiseVR
+        
+class SeismicVB(nb.Noise):
+    style = dict(
+        label = 'Body wave Vertical',
+        color='#FFA500',
+        linestyle='--'
+        )
+    def calc(self):
+        _,_,_,noiseVB,_ = seismic_noise(self.freq,self.ifo.Seismic)
+        return noiseVB
+
+class SeismicTR(nb.Noise):
+    style = dict(
+        label = 'Rayleigh wave Tilt',
+        color='#FF4500',
+        linestyle='--'
+        )
+    def calc(self):
+        _,_,_,_,noiseTR = seismic_noise(self.freq,self.ifo.Seismic)
+        return noiseTR
+        
+    
+
+
+class Seismic(nb.Budget):
+    """Seismic"""
     style = dict(
         label = 'Seismic',
         color='#855700'
         )
-    def calc(self):
-        noise = seismic_noise(self.freq,self.ifo.Seismic)**2
-        return noise
+    noises = [
+            SeismicHR,
+            SeismicHB,
+            SeismicVR,
+            SeismicVB,
+            SeismicTR
+            ]
 
 class NewtonianBodyWave(nb.Noise):
     style = dict(
         label = 'Body Wave',
+        color='#AAFF32'
         )
     def calc(self):
         noise = body_wave(self.freq,self.ifo.Seismic)**2
@@ -147,6 +206,7 @@ class NewtonianBodyWave(nb.Noise):
 class NewtonianRayleighWave(nb.Noise):
     style = dict(
         label = 'Rayleigh Wave',
+        color='#C20078'
         )
     def calc(self):
         noise = rayleigh_wave(self.freq,self.ifo.Seismic)**2
@@ -154,7 +214,8 @@ class NewtonianRayleighWave(nb.Noise):
 
 class NewtonianCavern(nb.Noise):
     style = dict(
-        label = 'Cavern',
+        label = 'Cavern Acoustic',
+        color='#650021'
         )
     def calc(self):
         noise = cavern_noise(self.freq,self.ifo.Seismic)**2
@@ -163,6 +224,7 @@ class NewtonianCavern(nb.Noise):
 class NewtonianAtmospheric(nb.Noise):
     style = dict(
         label = 'Atmospheric',
+        color='#01153E'
         )
     def calc(self):
         noise = atmospheric_noise(self.freq,self.ifo.Seismic)**2
