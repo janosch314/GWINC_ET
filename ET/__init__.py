@@ -19,18 +19,26 @@ class BudgetWrapper(nb.Noise):
 
 class ETLF(BudgetWrapper):
     """ET Low-Frequency"""
-    ifo_name = 'ETLF' 
+    ifo_name = 'ETLF'
+    style = dict(
+        color='blue',
+        lw=3
+    )
 
 class ETHF(BudgetWrapper):
     """ET High-Frequency"""
-    ifo_name = 'ETHF' 
+    ifo_name = 'ETHF'
+    style = dict(
+        color='red',
+        lw=3
+    )
 
 class ETDesignReport(nb.Noise):
     style = dict(
-        label='ET-D Design Report',
+        label='ET-D',
         color='black',
         linestyle='--',
-        lw=1
+        lw=2
     )
 
     def load(self):
@@ -47,6 +55,11 @@ def invsum(data):
 class ET(nb.Budget):
     name = 'Einstein Telescope'
     freq = DEFAULT_FREQ
+    style = dict(
+        color='black',
+        alpha=1,
+        lw=4
+    )
 
     noises = [
         ETLF,

@@ -53,7 +53,8 @@ class QuantumVacuum(nb.Budget):
         QuantumVacuumReadout,
         QuantumVacuumQuadraturePhase,
     ]
-    
+        
+
 class CoatingBrownian(nb.Noise):
     """Coating Brownian
 
@@ -100,20 +101,25 @@ class CoatingThermoOptic(nb.Noise):
             self.freq, ETM, wavelength, cavity.wBeam_ETM,
         )
         return (nITM + nETM) * 2
+        
+class Coating(nb.Budget):
+    """Coating Thermal
 
+    """
 
-class SusThermal(nb.Noise):
+    name = 'Coating'
+
     style = dict(
-        label = 'Suspension Thermal',
-        color='#0d75f8',
-        )
-    def calc(self):
-        #_,noise = STNRmodal(self.freq, self.ifo.Suspension, self.ifo)
-        #violin = STNViol(self.freq, self.ifo.Suspension, self.ifo)
-        [noise,noise_h,noise_v]=STNpy(self.freq, self.ifo)
-        return (noise).real
+        label='Coating Thermal',
+        color='#fe0002',
+    )
 
-class SubThermalElastic(nb.Noise):
+    noises = [
+        CoatingBrownian,
+        CoatingThermoOptic,
+    ]
+
+class SubstrateThermoElastic(nb.Noise):
     style = dict(
         label = 'Substrate Thermal Elastic',
         color='#f5bf03',
@@ -126,6 +132,52 @@ class SubThermalElastic(nb.Noise):
         nETM = substratethermoelastic(
             self.freq, self.ifo.Materials, cavity.wBeam_ETM)
         return (nITM + nETM) * 2
+        
+class ITMThermoRefractive(nb.Noise):
+
+    style = dict(
+        label='ITM Thermo-Refractive',
+        color='#448ee4',
+        linestyle='--',
+    )
+
+    def calc(self):
+        power = ifo_power(self.ifo)
+        gPhase = power.finesse * 2/np.pi
+        cavity = arm_cavity(self.ifo)
+        n = noise.substratethermal.substrate_thermorefractive(
+            self.freq, self.ifo.Materials, cavity.wBeam_ITM, exact=True)
+        return n * 2 / gPhase**2
+
+class Substrate(nb.Budget):
+    """Substrate Thermal
+
+    """
+
+    name = 'Substrate'
+
+    style = dict(
+        label='Substrate Thermal',
+        color='#fb7d07',
+    )
+
+    noises = [
+        SubstrateBrownian,
+        SubstrateThermoElastic,
+        ITMThermoRefractive
+    ]
+
+
+class SuspensionThermal(nb.Noise):
+    style = dict(
+        label = 'Suspension Thermal',
+        color='#0d75f8',
+        )
+    def calc(self):
+        #_,noise = STNRmodal(self.freq, self.ifo.Suspension, self.ifo)
+        #violin = STNViol(self.freq, self.ifo.Suspension, self.ifo)
+        [noise,noise_h,noise_v]=STNpy(self.freq, self.ifo)
+        return (noise).real
         
 class SeismicHR(nb.Noise):
     style = dict(
@@ -197,7 +249,7 @@ class Seismic(nb.Budget):
 class NewtonianBodyWave(nb.Noise):
     style = dict(
         label = 'Body Wave',
-        color='#AAFF32'
+        color='#85a3b2'
         )
     def calc(self):
         noise = body_wave(self.freq,self.ifo.Seismic)**2
@@ -224,7 +276,7 @@ class NewtonianCavern(nb.Noise):
 class NewtonianAtmospheric(nb.Noise):
     style = dict(
         label = 'Atmospheric',
-        color='#01153E'
+        color='#ffa62b'
         )
     def calc(self):
         noise = atmospheric_noise(self.freq,self.ifo.Seismic)**2
@@ -234,7 +286,8 @@ class Newtonian(nb.Budget):
     """Newtonian"""
     style = dict(
         label = 'Newtonian Gravity',
-        color='#15b01a'
+        color='#15b01a',
+        alpha=1
         )
     noises = [
             NewtonianBodyWave,
@@ -322,23 +375,7 @@ class ExcessGas(nb.Budget):
         ExcessGasDampingH2O,
         ExcessGasDampingO2,
     ]
-    
-    
-class ITMThermoRefractive(nb.Noise):
 
-    style = dict(
-        label='ITM Thermo-Refractive',
-        color='#448ee4',
-        linestyle='--',
-    )
-
-    def calc(self):
-        power = ifo_power(self.ifo)
-        gPhase = power.finesse * 2/np.pi
-        cavity = arm_cavity(self.ifo)
-        n = noise.substratethermal.substrate_thermorefractive(
-            self.freq, self.ifo.Materials, cavity.wBeam_ITM, exact=True)
-        return n * 2 / gPhase**2
 
 class ETLF(nb.Budget):
 
@@ -348,12 +385,9 @@ class ETLF(nb.Budget):
         QuantumVacuum,
         Seismic,
         Newtonian,
-        SusThermal,
-        CoatingBrownian,
-        CoatingThermoOptic,
-        SubstrateBrownian,
-        SubThermalElastic,
-        ITMThermoRefractive,
+        SuspensionThermal,
+        Coating,
+        Substrate,
         ExcessGas,
     ]
 

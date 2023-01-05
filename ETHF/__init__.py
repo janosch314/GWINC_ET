@@ -34,6 +34,42 @@ class QuantumVacuum(nb.Budget):
         QuantumVacuumReadout,
         QuantumVacuumQuadraturePhase,
     ]
+    
+class Coating(nb.Budget):
+    """Coating Thermal
+
+    """
+
+    name = 'Coating'
+
+    style = dict(
+        label='Coating Thermal',
+        color='#fe0002',
+    )
+
+    noises = [
+        CoatingBrownian,
+        CoatingThermoOptic,
+    ]
+
+class Substrate(nb.Budget):
+    """Substrate Thermal
+
+    """
+
+    name = 'Substrate'
+
+    style = dict(
+        label='Substrate Thermal',
+        color='#fb7d07',
+    )
+
+    noises = [
+        SubstrateBrownian,
+        SubstrateThermoElastic,
+        ITMThermoRefractive
+    ]
+
 class SusThermal(nb.Noise):
     style = dict(
         label = 'Suspension Thermal',
@@ -148,7 +184,7 @@ class Seismic(nb.Noise):
 class NewtonianBodyWave(nb.Noise):
     style = dict(
         label = 'Body Wave',
-        color='#AAFF32'
+        color='#85a3b2'
         )
     def calc(self):
         noise = body_wave(self.freq,self.ifo.Seismic)**2
@@ -175,7 +211,7 @@ class NewtonianCavern(nb.Noise):
 class NewtonianAtmospheric(nb.Noise):
     style = dict(
         label = 'Atmospheric',
-        color='#01153E'
+        color='#ffa62b'
         )
     def calc(self):
         noise = atmospheric_noise(self.freq,self.ifo.Seismic)**2
@@ -185,7 +221,8 @@ class Newtonian(nb.Budget):
     """Newtonian"""
     style = dict(
         label = 'Newtonian Gravity',
-        color='#15b01a'
+        color='#15b01a',
+        alpha=1
         )
     noises = [
             NewtonianBodyWave,
@@ -204,10 +241,8 @@ class ETHF(nb.Budget):
         Seismic,
         Newtonian,
         SusThermal,
-        CoatingBrownian,
-        CoatingThermoOptic,
-        SubstrateBrownian,
-        SubstrateThermoElastic,
+        Coating,
+        Substrate,
         ExcessGas
     ]
 

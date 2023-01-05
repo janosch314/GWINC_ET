@@ -34,26 +34,26 @@ Infrastructure:
   Temp: 290                       # K
   ResidualGas:
     H2:
-      BeamtubePressure: 2.0e-8      # Pa
+      BeamtubePressure: 1e-8      # Pa
       ChamberPressure: 2.0e-8       # Pa
       mass: 3.35e-27                # kg; Mass of H_2 (ref. 10)
       polarizability: 7.87e-31      # m^3;
 
     N2:
       BeamtubePressure: 5.0e-10
-      ChamberPressure: 5.0e-10
+      ChamberPressure: 1.0e-9
       mass: 4.65e-26
       polarizability: 1.71e-30
 
     H2O:
       BeamtubePressure: 1.0e-9
-      ChamberPressure: 1.0e-9
+      ChamberPressure: 2.0e-9
       mass: 2.99e-26
       polarizability: 1.50e-30
 
     O2:
       BeamtubePressure: 5.0e-10
-      ChamberPressure: 5.0e-10
+      ChamberPressure: 1.0e-9
       mass: 5.31e-26
       polarizability: 1.56e-30
 
@@ -103,7 +103,7 @@ Seismic:
 Suspension:
   Optcyl: 1
   Type: 'Quad'
-  FiberType: 'Ribbon'
+  FiberType: 'Tapered'
   BreakStress: 750e6              # Pa; ref. K. Strain
   Temp: 290
   VHCoupling:
@@ -148,19 +148,6 @@ Suspension:
     Y: 212.12e9
     Dissdepth: 0
 
-  # ref http://www.ioffe.ru/SVA/NSM/Semicond/Si/index.html
-  # all properties should be for T ~ 120 K
-  Silicon:
-    Rho: 2329                     # Kg/m^3;  density
-    C: 300                        # J/kg/K   heat capacity
-    K: 700                        # W/m/K    thermal conductivity
-    Alpha: 1e-10                  # 1/K      thermal expansion coeff
-    # from Gysin, et. al. PRB (2004)  E(T): E0 - B*T*exp(-T0/T)
-    # E0: 167.5e9 Pa   T0: 317 K   B: 15.8e6 Pa/K
-    dlnEdT: -2e-5                 # (1/K)    dlnE/dT  T=120K
-    Phi: 2e-9                     # Nawrodt (2010)      loss angle  1/Q
-    Y: 155.8e9                    # Pa       Youngs Modulus
-    Dissdepth: 0  #1.5e-3             # 10x smaller surface loss depth (Nawrodt (2010))
 
   # Note stage numbering: mirror is at beginning of stack, not end
   #
@@ -176,18 +163,18 @@ Suspension:
       # in suspQuad, so including it here would double count)
       Temp: 290
       WireMaterial : 'Silica'
-      Length: 2               # m
+      Length: 0.6               # m
       Dilution: .nan              #
       K: 1.4                     # N/m; vertical spring constant
-      WireRadius: 425e-6
-      WireDiameter: 850e-6         # as in Virgo GWINC
+      WireRadius: 450e-6
+      WireDiameter: 900e-6         # as in Virgo GWINC
       Blade: .nan                # blade thickness
       NWires: 4
       WireDiameter1: 1800e-6
-      WireDiameter2: 850e-6
+      WireDiameter2: 900e-6
       WireDiameter3: 1800e-6
       Length1: 0.05
-      Length2: 1.2
+      Length2: 0.6
       Length3: 0.05
       Qvh: 1e20
       Qvv: 1e20
@@ -197,11 +184,11 @@ Suspension:
     - Mass: 200
       Temp: 290
       WireMaterial : 'Silica'
-      Length: 1.2
+      Length: 0.6
       Dilution: .nan
       K: 50
-      WireRadius: 425e-6
-      WireDiameter: 850e-6
+      WireRadius: 450e-6
+      WireDiameter: 900e-6
       Blade: .nan
       NWires: 4
       Qvh: 1e20
@@ -212,13 +199,13 @@ Suspension:
     - Mass: 200
       Temp: 290
       WireMaterial : 'Silica'
-      Length: 1
+      Length: 0.6
       Dilution: .nan
       K: 20
-      WireRadius: 1.2e-3
-      WireDiameter: 2.4e-3
+      WireRadius: 1.3e-3
+      WireDiameter: 2.6e-3
       Blade: 4600e-6
-      NWires: 1
+      NWires: 0.6
       Qvh: 1e20
       Qvv: 1e20
 

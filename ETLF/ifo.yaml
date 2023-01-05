@@ -35,8 +35,8 @@ Infrastructure:
   ResidualGas:
     # polarizabilities from https://cccbdb.nist.gov/pollistx.asp
     H2:
-      BeamtubePressure: 2.0e-8      # Pa
-      ChamberPressure: 5.0e-8       # Pa
+      BeamtubePressure: 1e-8      # Pa
+      ChamberPressure: 2.0e-8       # Pa
       mass: 3.35e-27                # kg; Mass of H_2 (ref. 10)
       polarizability: 7.87e-31      # m^3;
     N2:
@@ -101,9 +101,9 @@ Seismic:
 Suspension:
   Optcyl: 0
   Type: 'Quad'
-  FiberType: 'Ribbon'
+  FiberType: 'Round'
   BreakStress: 750e6              # Pa; ref. K. Strain
-  Temp: 18
+  Temp: 10
   VHCoupling:
     theta: 7.8e-4                   # vertical-horizontal x-coupling (computed in precompIFO)
 
@@ -136,13 +136,13 @@ Suspension:
     Y: 187e9
 
   # ref http://www.ioffe.ru/SVA/NSM/Semicond/Si/index.html
-  # all properties should be for T ~ 120 K
+  # all properties should be for T ~ 10 K
   Silicon:
     Rho: 2331.5 #2329                           # Kg/m^3;  density
-    C: 3.41                        # J/kg/K   heat capacity
-    K: 4940                            # W/m/K    thermal conductivity
-    Alpha: -2.5e-9                    #(18K)  # 1/K      thermal expansion coeff
-    dlnEdT: -7.88e-6                       # (1/K)
+    C: 0.276                        # J/kg/K   heat capacity
+    K: 2110                            # W/m/K    thermal conductivity
+    Alpha: 8.1e-10                    #(18K)  # 1/K      thermal expansion coeff
+    dlnEdT: -7.88e-6                       #? (1/K)
     Phi: 1e-9                           # Nawrodt (2010)      loss angle  1/Q
     Y: 1.32e11                          # Pa       Youngs Modulus
     Dissdepth: 0.5e-3                   # 10x smaller surface loss depth (Nawrodt (2010))
@@ -169,13 +169,13 @@ Suspension:
       # length adjusted for d = 10mm and d_bend = 4mm
       # (since 602mm is the CoM separation, and d_bend is accounted for
       # in suspQuad, so including it here would double count)
-      Temp: 18
+      Temp: 10
       WireMaterial : 'Silicon'
       Length: 1.2               # m
       Dilution: .nan              #
       K: .nan                     # N/m; vertical spring constant
-      WireRadius: 1.5e-3
-      WireDiameter: 3e-3          # m
+      WireRadius: 2.2e-3
+      WireDiameter: 4.4e-3          # m
       Blade: .nan                 # blade thickness
       NWires: 4
       Qvh: 1e20
@@ -187,13 +187,13 @@ Suspension:
       # length adjusted for d = 10mm and d_bend = 4mm
       # (since 602mm is the CoM separation, and d_bend is accounted for
       # in suspQuad, so including it here would double count)
-      Temp: 18
+      Temp: 10
       WireMaterial : 'Silicon'
       Length: 1.2               # m
       Dilution: .nan              #
       K: .nan                     # N/m; vertical spring constant
-      WireRadius: 1.5e-3
-      WireDiameter: 3e-3          # m
+      WireRadius: 2.2e-3
+      WireDiameter: 4.4e-3          # m
       Blade: .nan                 # blade thickness
       NWires: 4
       Qvh: 1e20
@@ -202,13 +202,13 @@ Suspension:
     # Stage3
     # Marionetta
     - Mass: 211
-      Temp: 18
+      Temp: 10
       WireMaterial : 'Silicon'
       Length: 1.0
       Dilution: .nan
       K: .nan
-      WireRadius: 4.05e-3
-      WireDiameter: 8.1e-3
+      WireRadius: 6.2e-3
+      WireDiameter: 12.4e-3
       Blade: 4200e-6
       NWires: 1
       Qvh: 1e20

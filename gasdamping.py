@@ -40,8 +40,9 @@ def S_F_cavalleri(ifo, species):
     m = species.mass
     alpha = species.polarizability
     r=ifo.Materials.MassRadius
+    thickness = ifo.Materials.MassThickness
     
-    S_F = P * np.sqrt((128/np.pi)*m*kT) * np.pi * r**2 * (1 + r/(2*r) + np.pi/4)
+    S_F = P * np.sqrt((128/np.pi)*m*kT) * np.pi * r**2 * (1 + thickness /(2*r) + np.pi/4)
     return S_F
 
 def calc_x_noise(f, S_F, ifo):
