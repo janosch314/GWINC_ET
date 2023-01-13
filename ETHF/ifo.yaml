@@ -205,7 +205,7 @@ Suspension:
       WireRadius: 1.3e-3
       WireDiameter: 2.6e-3
       Blade: 4600e-6
-      NWires: 0.6
+      NWires: 1
       Qvh: 1e20
       Qvv: 1e20
 
