@@ -6,6 +6,7 @@ from susthnew import STNpy
 from gasdamping import S_F_cavalleri
 from gasdamping import calc_x_noise
 import coatingth
+from gwinc.ifo.noises import arm_cavity
 
 from thermoelastic import substratethermoelastic
 from envnoise import (
@@ -340,21 +341,68 @@ class ExcessGasDampingH2O(nb.Noise):
         return dam
 
 
-class ExcessGasDampingO2(nb.Noise):
-    """Excess gas damping for O2
+class ExcessGasDampingCO2(nb.Noise):
+    """Excess gas damping for CO2
 
     """
     style = dict(
-        label='O$_2$ damping',
+        label='CO$_2$ damping',
         color='xkcd:grey',
         linestyle='--',
     )
     def calc(self):
-        species = self.ifo.Infrastructure.ResidualGas.O2
+        species = self.ifo.Infrastructure.ResidualGas.CO2
+        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo,species),self.ifo)
+        return dam
+        
+class ExcessGasDampingC2H4(nb.Noise):
+    """Excess gas damping for C2H4
+
+    """
+    style = dict(
+        label='C$_2$H$_4$ damping',
+        color='xkcd:cyan',
+        linestyle='--',
+    )
+    def calc(self):
+        species = self.ifo.Infrastructure.ResidualGas.C2H4
         dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo,species),self.ifo)
         return dam
 
-            
+class ExcessGasScatteringCO2(nb.Noise):
+    """Excess gas scattering for CO2
+
+    """
+    style = dict(
+        label='CO$_2$ scattering',
+        color='xkcd:grey'
+    )
+
+    def calc(self):
+        cavity = arm_cavity(self.ifo)
+        species = self.ifo.Infrastructure.ResidualGas.CO2
+        n = noise.residualgas.residual_gas_scattering_arm(
+            self.freq, self.ifo, cavity, species)
+        dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
+        return n * 2 / sinc_sqr
+
+class ExcessGasScatteringC2H4(nb.Noise):
+    """Excess gas scattering for C2H4
+
+    """
+    style = dict(
+        label='C$_2$H$_4$ scattering',
+        color='xkcd:cyan'
+    )
+
+    def calc(self):
+        cavity = arm_cavity(self.ifo)
+        species = self.ifo.Infrastructure.ResidualGas.C2H4
+        n = noise.residualgas.residual_gas_scattering_arm(
+            self.freq, self.ifo, cavity, species)
+        dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
+        return n * 2 / sinc_sqr
+
 class ExcessGas(nb.Budget):
     """Excess Gas
 
@@ -369,11 +417,13 @@ class ExcessGas(nb.Budget):
         ExcessGasScatteringH2,
         ExcessGasScatteringN2,
         ExcessGasScatteringH2O,
-        ExcessGasScatteringO2,
+        ExcessGasScatteringCO2,
+        ExcessGasScatteringC2H4,
         ExcessGasDampingH2,
         ExcessGasDampingN2,
         ExcessGasDampingH2O,
-        ExcessGasDampingO2,
+        ExcessGasDampingCO2,
+        ExcessGasDampingC2H4
     ]
 
 

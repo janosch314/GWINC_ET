@@ -44,18 +44,24 @@ Infrastructure:
       ChamberPressure: 1.0e-9
       mass: 4.65e-26
       polarizability: 1.71e-30
-
+      
+    CO2:
+      BeamtubePressure: 2.0e-10
+      ChamberPressure: 4.0e-10
+      mass: 7.3e-26
+      polarizability: 2.5e-30
+      
     H2O:
-      BeamtubePressure: 1.0e-9
-      ChamberPressure: 2.0e-9
+      BeamtubePressure: 2.0e-9
+      ChamberPressure: 4.0e-9
       mass: 2.99e-26
       polarizability: 1.50e-30
 
-    O2:
-      BeamtubePressure: 5.0e-10
-      ChamberPressure: 1.0e-9
-      mass: 5.31e-26
-      polarizability: 1.56e-30
+    C2H4:
+      BeamtubePressure: 1.0e-11
+      ChamberPressure: 2.0e-11
+      mass: 4.68e-26
+      polarizability: 4.19e-30
 
 TCS:
   # The presumably dominant effect of a thermal lens in the ITMs is an increased
