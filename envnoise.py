@@ -98,7 +98,7 @@ def spectrum_pressure_cavern(f):
 ################################################################################
 def body_wave(f,Seismic):
     p = 0.33  # Fraction of body wave spectral density caused by compressional waves
-    rock_density = 3e3  # kg / m^3
+    rock_density = Seismic.RhoR  # kg / m^3
     Sh =  (4/3 * np.pi * constants.G * rock_density)**2 * (3*p + 1) * spectrum_bodywave(f,Seismic) * 4 / (2*np.pi*f)**4  # Equation 7
     return np.sqrt(Sh)
 
@@ -114,7 +114,7 @@ def rayleigh_wave(f,Seismic):
 
     h = -Seismic.Height  # Detector depth in m
     gamma = 0.8  # Factor quantifying cancellation of newtonian noise
-    density_surface = 2e3  # Density of surface in kg / m^3
+    density_surface = Seismic.RhoS  # Density of surface in kg / m^3
 
     r0 = kr * (1 - zeta)  # eq. 3
     sh = -kr * (1 + zeta) * np.exp(-kr * h)  # eq. 4
