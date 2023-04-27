@@ -12,7 +12,7 @@ Source code and instructions: https://git.ligo.org/gwinc/pygwinc
 **To install inspiral-range**:
 
 _[Option 1:]_ Run the folloing command: 
-`pip install inspiral_range`
+`pip install inspiral-range`
 
 _[Option 2:]_ Download from the inspiral-range home page: https://git.ligo.org/gwinc/inspiral-range
 
