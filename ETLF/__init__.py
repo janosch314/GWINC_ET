@@ -1,5 +1,8 @@
+import os
+import copy
 from gwinc.ifo.noises import *
 from gwinc.ifo import PLOT_STYLE
+from gwinc import noise
 from gwinc.ifo.noises import arm_cavity
 from gwinc.ifo.noises import ifo_power
 from susthnew import STNpy
@@ -16,6 +19,8 @@ from envnoise import (
         rayleigh_wave,
         seismic_noise
         )
+
+DEFAULT_FREQ = np.logspace(np.log10(1),np.log10(1000),3000)
 
 def mirror_struct(ifo, tm):
     """Create a "mirror" Struct for a LIGO core optic
@@ -36,25 +41,13 @@ def mirror_struct(ifo, tm):
     return mirror
     
 
-class QuantumVacuum(nb.Budget):
-    """Quantum Vacuum
+from gwinc.noise.quantum import (
+    Quantum,
+    QuantumRelShotNoise,
+    QuantumRelGamma,
+    QuantumXi,
+)
 
-    """
-    style = dict(
-        label='Quantum Vacuum',
-        color='#ad03de',
-    )
-
-    noises = [
-        QuantumVacuumAS,
-        QuantumVacuumArm,
-        QuantumVacuumSEC,
-        QuantumVacuumFilterCavity,
-        QuantumVacuumInjection,
-        QuantumVacuumReadout,
-        QuantumVacuumQuadraturePhase,
-    ]
-        
 
 class CoatingBrownian(nb.Noise):
     """Coating Brownian
@@ -163,7 +156,7 @@ class Substrate(nb.Budget):
     )
 
     noises = [
-        SubstrateBrownian,
+        noise.substratethermal.SubstrateBrownian,
         SubstrateThermoElastic,
         ITMThermoRefractive
     ]
@@ -297,148 +290,19 @@ class Newtonian(nb.Budget):
             NewtonianAtmospheric
             ]
 
-class ExcessGasDampingH2(nb.Noise):
-    """Residual gas damping for H2
-
-    """
-    style = dict(
-        label='H$_2$ damping',
-        color='xkcd:red orange',
-        linestyle='--',
-    )
-    def calc(self):
-        species = self.ifo.Infrastructure.ResidualGas.H2
-        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo,species),self.ifo)
-        return dam
-
-class ExcessGasDampingN2(nb.Noise):
-    """Excess gas damping for N2
-
-    """
-    style = dict(
-        label='N$_2$ damping',
-        color='xkcd:emerald',
-        linestyle='--',
-    )
-    def calc(self):
-        species = self.ifo.Infrastructure.ResidualGas.N2
-        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo,species),self.ifo)
-        return dam
-
-
-class ExcessGasDampingH2O(nb.Noise):
-    """Excess gas damping for H2O
-
-    """
-    style = dict(
-        label='H$_2$O damping',
-        color='xkcd:water blue',
-        linestyle='--',
-    )
-    def calc(self):
-        species = self.ifo.Infrastructure.ResidualGas.H2O
-        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo,species),self.ifo)
-        return dam
-
-
-class ExcessGasDampingCO2(nb.Noise):
-    """Excess gas damping for CO2
-
-    """
-    style = dict(
-        label='CO$_2$ damping',
-        color='xkcd:grey',
-        linestyle='--',
-    )
-    def calc(self):
-        species = self.ifo.Infrastructure.ResidualGas.CO2
-        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo,species),self.ifo)
-        return dam
-        
-class ExcessGasDampingC2H4(nb.Noise):
-    """Excess gas damping for C2H4
-
-    """
-    style = dict(
-        label='C$_2$H$_4$ damping',
-        color='xkcd:cyan',
-        linestyle='--',
-    )
-    def calc(self):
-        species = self.ifo.Infrastructure.ResidualGas.C2H4
-        dam=calc_x_noise(self.freq,S_F_cavalleri(self.ifo,species),self.ifo)
-        return dam
-
-class ExcessGasScatteringCO2(nb.Noise):
-    """Excess gas scattering for CO2
-
-    """
-    style = dict(
-        label='CO$_2$ scattering',
-        color='xkcd:grey'
-    )
-
-    def calc(self):
-        cavity = arm_cavity(self.ifo)
-        species = self.ifo.Infrastructure.ResidualGas.CO2
-        n = noise.residualgas.residual_gas_scattering_arm(
-            self.freq, self.ifo, cavity, species)
-        dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
-        return n * 2 / sinc_sqr
-
-class ExcessGasScatteringC2H4(nb.Noise):
-    """Excess gas scattering for C2H4
-
-    """
-    style = dict(
-        label='C$_2$H$_4$ scattering',
-        color='xkcd:cyan'
-    )
-
-    def calc(self):
-        cavity = arm_cavity(self.ifo)
-        species = self.ifo.Infrastructure.ResidualGas.C2H4
-        n = noise.residualgas.residual_gas_scattering_arm(
-            self.freq, self.ifo, cavity, species)
-        dhdl_sqr, sinc_sqr = dhdl(self.freq, self.ifo.Infrastructure.Length)
-        return n * 2 / sinc_sqr
-
-class ExcessGas(nb.Budget):
-    """Excess Gas
-
-    """
-    style = dict(
-        label='Residual Gas',
-        color='#add00d',
-        linestyle='-',
-    )
-
-    noises = [
-        ExcessGasScatteringH2,
-        ExcessGasScatteringN2,
-        ExcessGasScatteringH2O,
-        ExcessGasScatteringCO2,
-        ExcessGasScatteringC2H4,
-        ExcessGasDampingH2,
-        ExcessGasDampingN2,
-        ExcessGasDampingH2O,
-        ExcessGasDampingCO2,
-        ExcessGasDampingC2H4
-    ]
 
 
 class ETLF(nb.Budget):
 
     name = 'ETLF'
-
     noises = [
-        QuantumVacuum,
+        Quantum,
         Seismic,
         Newtonian,
         SuspensionThermal,
         Coating,
         Substrate,
-        ExcessGas,
+        noise.residualgas.ResidualGas
     ]
 
     calibrations = [
@@ -448,5 +312,5 @@ class ETLF(nb.Budget):
     plot_style = PLOT_STYLE
 
 
-    freq = '1:3000:4000'
+    #freq = '1:3000:4000'
 

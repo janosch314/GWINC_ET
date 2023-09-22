@@ -35,33 +35,33 @@ Infrastructure:
   ResidualGas:
     H2:
       BeamtubePressure: 1e-8      # Pa
-      ChamberPressure: 2.0e-8       # Pa
+      ChamberPressure: 2e-7       # Pa
       mass: 3.35e-27                # kg; Mass of H_2 (ref. 10)
       polarizability: 7.87e-31      # m^3;
 
     N2:
-      BeamtubePressure: 5.0e-10
-      ChamberPressure: 1.0e-9
+      BeamtubePressure: 2.5e-10
+      ChamberPressure: 5.0e-9
       mass: 4.65e-26
       polarizability: 1.71e-30
       
-    CO2:
-      BeamtubePressure: 2.0e-10
-      ChamberPressure: 4.0e-10
-      mass: 7.3e-26
-      polarizability: 2.5e-30
+    O2:
+      BeamtubePressure: 2.5e-10
+      ChamberPressure: 5.0e-9
+      mass: 5.31e-26
+      polarizability: 1.56e-30
       
     H2O:
-      BeamtubePressure: 2.0e-9
-      ChamberPressure: 4.0e-9
+      BeamtubePressure: 5.0e-9
+      ChamberPressure: 1.0e-7
       mass: 2.99e-26
       polarizability: 1.50e-30
 
-    C2H4:
-      BeamtubePressure: 1.0e-11
-      ChamberPressure: 2.0e-11
-      mass: 4.68e-26
-      polarizability: 4.19e-30
+    #C2H4:
+     # BeamtubePressure: 1.0e-11
+     # ChamberPressure: 2.0e-11
+     # mass: 4.68e-26
+     # polarizability: 4.19e-30
 
 TCS:
   # The presumably dominant effect of a thermal lens in the ITMs is an increased
@@ -322,6 +322,7 @@ Optics:
     Transmittance: 0.05
     CavityLength: 100              # m, ITM to SRM distance
     Tunephase: 0                # SEC tuning
+    LengthRMS: 1e-12
 
   Curvature:                      # ROC
     ITM: 5070
@@ -340,7 +341,8 @@ Squeezer:
   InjectionLoss: 0.03             # power loss to sqz
   SQZAngle: 0                     # SQZ phase [radians]
   LOAngleRMS: 10e-3               # quadrature noise [radians]
-
+  SQZAngleRMS: 10e-3
+  
   # Parameters for frequency dependent squeezing
   FilterCavity:
      L: 1000                        # cavity length
@@ -349,3 +351,4 @@ Squeezer:
      Rot: 0                        # phase rotation after cavity
      fdetune: -21.14795               # detuning [Hz]
      Ti:  0.001773484             # input mirror trasmission [Power]
+     Lrms : 1e-12      # length noise RMS

@@ -10,7 +10,7 @@ def computeFCParams(ifo):
     Larm = ifo.Infrastructure.Length
     Titm = ifo.Optics.ITM.Transmittance
     Tsrm = ifo.Optics.SRM.Transmittance
-    phiSR= -ifo.Optics.SRM.Tunephase/2+pi/2
+    phiSR= ifo.Optics.SRM.Tunephase/2+pi/2
 
     rSR = sqrt(1-Tsrm)
     zeta1 = pi/2

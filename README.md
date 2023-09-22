@@ -3,11 +3,10 @@ To use this package for plotting noise budgets for Einstein Telescope one needs 
 **To install PyGWINC**:
 
 _[Option 1:]_ Run the folloing command:
-`pip install gwinc` 
+`pip install gwinc`  (Not adapted to current ET files)
 
-_[Option 2:]_ Download from the PyGwinc home page: https://pypi.org/project/gwinc/
+_[Option 2:]_ (Recomand) Install with git from the PyGwinc home page: https://pypi.org/project/gwinc/, Run "git check out superQK" 
 
-Source code and instructions: https://git.ligo.org/gwinc/pygwinc
 
 **To install inspiral-range**:
 

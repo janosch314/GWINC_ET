@@ -2,8 +2,9 @@ import os
 import numpy as np
 from gwinc.ifo.noises import *
 from gwinc import load_budget
+import scipy.interpolate
 
-DEFAULT_FREQ = '1:3000:6000'
+DEFAULT_FREQ = np.logspace(np.log10(1),np.log10(10000),3000)
 
 def get_local_filename(*parts):
     return os.path.join(os.path.dirname(__file__), *parts)
@@ -12,7 +13,7 @@ class BudgetWrapper(nb.Noise):
     ifo_name = ''
 
     def load(self):
-        self.budget = load_budget(self.ifo_name, freq=self.freq).run()
+        self.budget = load_budget(self.ifo_name, freq=DEFAULT_FREQ).run()
     
     def calc(self):
         return self.budget.psd
@@ -22,7 +23,7 @@ class ETLF(BudgetWrapper):
     ifo_name = 'ETLF'
     style = dict(
         color='blue',
-        lw=3
+        linewidth=3
     )
 
 class ETHF(BudgetWrapper):
@@ -30,7 +31,7 @@ class ETHF(BudgetWrapper):
     ifo_name = 'ETHF'
     style = dict(
         color='red',
-        lw=3
+        linewidth=3
     )
 
 class ETDesignReport(nb.Noise):
@@ -38,14 +39,15 @@ class ETDesignReport(nb.Noise):
         label='ET-D',
         color='black',
         linestyle='--',
-        lw=2
+        linewidth=2
     )
 
     def load(self):
         data = get_local_filename('et_d.txt')
         freq, asd = np.loadtxt(data).T
-        self.psd = self.interpolate(freq, asd**2)
-
+        func = scipy.interpolate.interp1d(freq, asd**2)
+        self.psd = func(DEFAULT_FREQ)
+        
     def calc(self):
         return self.psd
 
@@ -58,7 +60,7 @@ class ET(nb.Budget):
     style = dict(
         color='black',
         alpha=1,
-        lw=4
+        linewidth=4
     )
 
     noises = [

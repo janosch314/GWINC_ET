@@ -41,28 +41,28 @@ Infrastructure:
       polarizability: 7.87e-31      # m^3;
 
     N2:
-      BeamtubePressure: 5.0e-10
-      ChamberPressure: 1.0e-9
+      BeamtubePressure: 2.5e-10
+      ChamberPressure: 5.0e-10
       mass: 4.65e-26
       polarizability: 1.71e-30
       
-    CO2:
-      BeamtubePressure: 2.0e-10
-      ChamberPressure: 4.0e-9
-      mass: 7.3e-26
-      polarizability: 2.5e-30
+    O2:
+      BeamtubePressure: 2.5e-10
+      ChamberPressure: 5.0e-10
+      mass: 5.31e-26
+      polarizability: 1.56e-30
       
     H2O:
-      BeamtubePressure: 2.0e-9
-      ChamberPressure: 4.0e-9
+      BeamtubePressure: 5.0e-9
+      ChamberPressure: 1.0e-8
       mass: 2.99e-26
       polarizability: 1.50e-30
 
-    C2H4:
-      BeamtubePressure: 1.0e-11
-      ChamberPressure: 2.0e-11
-      mass: 4.68e-26
-      polarizability: 4.19e-30
+   # C2H4:
+    #  BeamtubePressure: 1.0e-11
+    #  ChamberPressure: 2.0e-11
+    #  mass: 4.68e-26
+    #  polarizability: 4.19e-30
 
 TCS:
   # The presumably dominant effect of a thermal lens in the ITMs is an increased
@@ -400,8 +400,8 @@ Optics:
   SRM:
     Transmittance: 0.2
     CavityLength: 100              # m, ITM to SRM distance
-    Tunephase: 0.75               # SEC tuning
-    #LengthRMS: 0e-11
+    Tunephase: -0.75               # SEC tuning
+    LengthRMS: 1e-12
 
   Curvature:                      # ROC
     ITM: 5580
@@ -418,9 +418,9 @@ Squeezer:
   Type: 'Freq Dependent'
   AmplitudedB: 10                 # SQZ amplitude [dB]
   InjectionLoss: 0.04            # power loss to sqz
-  SQZAngle: -0.3      #-0.37                     # SQZ phase [radians]
+  SQZAngle: 0.3      #-0.37                     # SQZ phase [radians]
   LOAngleRMS: 10e-3               # quadrature noise [radians]
-  #SQZAngleRMS : 10e-3
+  SQZAngleRMS : 10e-3
 
   # Parameters for frequency dependent squeezing
   FilterCavity:
@@ -430,7 +430,7 @@ Squeezer:
       Rot: 0                        # phase rotation after cavity
       fdetune: -7.652542257              # detuning [Hz]
       Ti:  0.0001380223386               # input mirror trasmission [Power]
-      #Lrms : 0e-12
+      Lrms : 1e-12
 
     - L: 1000                       # cavity length
       Te: 5e-6                      # end mirror trasmission
@@ -438,4 +438,4 @@ Squeezer:
       Rot: 0                        # phase rotation after cavity
       fdetune: 19.5067922           # detuning [Hz]
       Ti: 0.000357105                   # input mirror trasmission [Power]
-      #Lrms : 0e-12
+      Lrms : 1e-12
