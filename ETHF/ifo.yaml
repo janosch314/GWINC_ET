@@ -31,7 +31,11 @@
 
 Infrastructure:
   Length: 10000                    # m
-  Temp: 290                       # K
+  Temp: 290                        # K
+  PipR: 0.5                        # m
+  BRDFbaff: 1e-4
+  l0: 32.35
+  
   ResidualGas:
     H2:
       BeamtubePressure: 1e-8      # Pa
@@ -276,6 +280,8 @@ Materials:
 
   ## Substrate Material parameters--------------------------------------------
   Substrate:
+    k: 3.2145e-09
+    nn: 2.3986
     Temp: 290
     c2: 7.6e-12                   # Coeff of freq depend. term for bulk mechanical loss, 7.15e-12 for Sup2
     MechanicalLossExponent: 0.77  # Exponent for freq dependence of silica loss, 0.822 for Sup2

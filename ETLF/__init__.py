@@ -5,6 +5,7 @@ from gwinc.ifo import PLOT_STYLE
 from gwinc import noise
 from gwinc.ifo.noises import arm_cavity
 from gwinc.ifo.noises import ifo_power
+from Scattering import BackResult
 from susthnew import STNpy
 from gasdamping import S_F_cavalleri
 from gasdamping import calc_x_noise
@@ -291,7 +292,17 @@ class Newtonian(nb.Budget):
             ]
 
 
-
+class StrayLight(nb.Noise):
+    """StrayLight"""
+    name = 'StrayLight'
+    style = dict(
+        label='Back Scattering',
+        color='#00EEEE',
+    )
+    def calc(self):
+        noise = BackResult(self.freq,self.ifo)**2
+        return noise
+        
 class ETLF(nb.Budget):
 
     name = 'ETLF'
@@ -299,6 +310,7 @@ class ETLF(nb.Budget):
         Quantum,
         Seismic,
         Newtonian,
+        StrayLight,
         SuspensionThermal,
         Coating,
         Substrate,

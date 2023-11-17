@@ -32,6 +32,10 @@
 Infrastructure:
   Length: 10000                    # m
   Temp: 290                       # K
+  PipR: 0.5                        # m
+  BRDFbaff: 1e-4
+  l0: 72.35
+  
   ResidualGas:
     # polarizabilities from https://cccbdb.nist.gov/pollistx.asp
     H2:
@@ -304,6 +308,8 @@ Materials:
 
   ## Substrate Material parameters--------------------------------------------
   Substrate:
+    k: 5.6558e-16
+    nn: 4.0442
     c2: 3e-13            # Coeff of freq dep. term for bulk loss (Lam & Douglass, 1981)
     MechanicalLossExponent: 1 # Exponent for freq dependence of silicon loss
     Alphas: 5.2e-12      # Surface loss limit ???
