@@ -4,7 +4,7 @@ More information and a tutorial can be found on the [WP wiki](https://wiki.et-gw
 
 **To install PyGWINC**:
 
-_[Option 1:]_ (Recomended) Install with git from the PyGwinc home page: https://pypi.org/project/gwinc/, Run "git check out superQK" 
+_[Option 1:]_ (Recomended) Install with git from the PyGwinc home page: https://git.ligo.org/gwinc/pygwinc, Run "git check out superQK" 
 
 _[Option 2:]_ Run the folloing command:
 `pip install gwinc`  (Not adapted to current ET files)
