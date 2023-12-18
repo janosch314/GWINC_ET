@@ -1,17 +1,12 @@
 To use this package for plotting noise budgets for Einstein Telescope one needs a working installation of Python, a PyGWINC and an inspiral-range packages installed.
 
-More information and a tutorial can be found on the [WP wiki](https://wiki.et-gw.eu/ISB/Interferometer/ObservatoryDesignAndNoiseBudget/WebHome)
-
 **To install PyGWINC**:
 
-<<<<<<< HEAD
-_[Option 2:]_ (Recomand) Install with git from the PyGwinc home page: https://pypi.org/project/gwinc/, Run "git checkout superQK" 
-=======
-_[Option 1:]_ (Recomended) Install with git from the PyGwinc home page: https://git.ligo.org/gwinc/pygwinc, Run "git checkout superQK" 
->>>>>>> 92460b49c291f7839658288a965ff2136e489923
-
-_[Option 2:]_ Run the folloing command:
+_[Option 1:]_ Run the folloing command:
 `pip install gwinc`  (Not adapted to current ET files)
+
+_[Option 2:]_ (Recomand) Install with git from the PyGwinc home page: https://pypi.org/project/gwinc/, Run "git checkout superQK" 
+
 
 **To install inspiral-range**:
 
