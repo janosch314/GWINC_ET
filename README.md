@@ -5,7 +5,7 @@ To use this package for plotting noise budgets for Einstein Telescope one needs 
 _[Option 1:]_ Run the folloing command:
 `pip install gwinc`  (Not adapted to current ET files)
 
-_[Option 2:]_ (Recomand) Install with git from the PyGwinc home page: https://pypi.org/project/gwinc/, Run "git check out superQK" 
+_[Option 2:]_ (Recomand) Install with git from the PyGwinc home page: https://pypi.org/project/gwinc/, Run "git checkout superQK" 
 
 
 **To install inspiral-range**:
@@ -25,5 +25,3 @@ _[Option 2:]_ Download from the inspiral-range home page: https://git.ligo.org/g
 **To plot the noise budgets** for ET-HF and ET-LF, run the [Run.ipynb](https://gitlab.et-gw.eu/et/isb/interferometer/wpiii.1-observatory-design-and-noise-budget./-/blob/master/Run.ipynb) Jupyter notebook file
 
 **To plot the Redshift vs. Source Mass plot**, run [Run_ horizon.ipynb](https://gitlab.et-gw.eu/et/isb/interferometer/wpiii.1-observatory-design-and-noise-budget./-/blob/master/Run_%20horizon.ipynb) Jupyter notebook file
-
-For an **example of how to tweak individual parameters** and compare the new and the old noise budgets, run [Param_change_example.ipynb](https://gitlab.et-gw.eu/et/isb/interferometer/wpiii.1-observatory-design-and-noise-budget./-/blob/master/Param_change_example.ipynb)
