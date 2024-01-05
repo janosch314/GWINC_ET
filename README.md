@@ -2,7 +2,7 @@ To use this package for plotting noise budgets for Einstein Telescope one needs 
 
 **To install PyGWINC**:
 
-1. For the full process, follow instructions on the wiki page: tbd
+1. For the full process, follow instructions on the wiki page: [temporary link](https://mkorobko.craft.me/zdS91j4bpYxbvW)
 
 2. If you know what you are doing, run `pip install git+https://git.ligo.org/gwinc/pygwinc.git@superQK` to install the pygwinc with from the correct branch required to compute ET noise budget
 
