@@ -166,7 +166,7 @@ def coating_brownian(f, mirror, wavelength, wBeam, power=None):
     # Calculate rho and derivatives of rho
     # with respect to both phi_k and r_j
     rho, dLogRho_dPhik, dLogRho_dRk, r = getCoatReflAndDer(mirror.Coating.nN, nsub, mirror.Coating.dOpt)
-    print('T={:.1f}'.format((1-abs(rho)**2)*1e6))
+    #print('T={:.1f}'.format((1-abs(rho)**2)*1e6))
 
     # Define the function epsilon as per Eq (25)
     # Split epsilon function as:
