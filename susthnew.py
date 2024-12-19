@@ -83,12 +83,12 @@ def STNpy(f,ifo):
         Delta = YM*(alpha - beta*T/(S*YM))**2*Temp/(rho*C)
         return Delta
 
-    z=np.zeros([len(f),3000],dtype = "complex_")
-    x=np.zeros([len(f),3000],dtype = "complex_")
-    TotEnergy=np.zeros([len(f)],dtype = "complex_")
-    Energy=np.zeros([len(f),3000],dtype = "complex_")
-    phiST=np.zeros([len(f)],dtype = "complex_")
-    phithT=np.zeros([len(f)],dtype = "complex_")
+    z=np.zeros([len(f),3000],dtype = "complex")
+    x=np.zeros([len(f),3000],dtype = "complex")
+    TotEnergy=np.zeros([len(f)],dtype = "complex")
+    Energy=np.zeros([len(f),3000],dtype = "complex")
+    phiST=np.zeros([len(f)],dtype = "complex")
+    phithT=np.zeros([len(f)],dtype = "complex")
 
     for i in range(len(w)):
         if Optcyl==0: # Cylindrical fibres
@@ -156,7 +156,7 @@ def STNpy(f,ifo):
     S1=cross_section_area(dd1/2)
 
 # Thermoelastic dissipation contribution
-    phith1=np.zeros([len(w)],dtype = "complex_")
+    phith1=np.zeros([len(w)],dtype = "complex")
     Delta1 = dissipation_delta(E1, alpha1, beta1, m1+m, N1, dd1/2, Temp, rho1, C1)
     tau1=0.0737*rho1*C1*(dd1)**2/K1
     for i in range(len(w)):
@@ -197,7 +197,7 @@ def STNpy(f,ifo):
 
 # Reaction constants for mirror stage fused silica fibres VIR-0.15A-09
 # sec. 2
-    Kpend=np.zeros([len(w)],dtype = "complex_")
+    Kpend=np.zeros([len(w)],dtype = "complex")
 
     for i in range(len(w)):
         if Optcyl==0: #Cylindrical fibres
@@ -219,14 +219,14 @@ def STNpy(f,ifo):
 # in a martix formalism Ah*Xh=B. The admittance is calculated. VIR-0.15A-09
 # sec. 1.1-1.2-1.3
 
-    Ah = np.zeros([len(f),2,2],dtype =  "complex_")
+    Ah = np.zeros([len(f),2,2],dtype =  "complex")
     Ah[:,0,0]=kp1+Kpend-m1*w**2
     Ah[:,0,1]=-Kpend
     Ah[:,1,0]=-Kpend
     Ah[:,1,1]=Kpend-m*w**2
     B=np.array([0,1])
 
-    Xh=np.zeros([2,len(w)],dtype =  "complex_")
+    Xh=np.zeros([2,len(w)],dtype =  "complex")
     def solver_AXB(Ah_matrix,B_matrix):
         for i in range(len(w)):
             Xh[:,i]=np.linalg.solve(Ah_matrix[i,:,:],np.transpose(B_matrix))
@@ -275,8 +275,8 @@ def STNpy(f,ifo):
 # Suspension thermal noise is calculated using fluctuation-dissipation theorem. The equations of motion are written
 # in a martix formalism Ah*Xh=B. The admittance is calculated. VIR-0.15A-09
 # sec. 1.1-1.2-1.3
-    Xv = np.zeros([2,len(f)],dtype = "complex_")
-    Av = np.zeros([len(f),2,2],dtype = "complex_")
+    Xv = np.zeros([2,len(f)],dtype = "complex")
+    Av = np.zeros([len(f),2,2],dtype = "complex")
     Av[:,0,0]=kv1+kv-m1*w**2
     Av[:,0,1]=-kv
     Av[:,1,0]=-kv
@@ -353,7 +353,7 @@ def Optimisedfibres(f,phi,ifo):
     lambda3=sqrt((T+sqrt(T**2+4*E*I3*w**2*rho*S3))/(2*E*I3));
     p3=sqrt((-T+sqrt(T**2+4*E*I3*w**2*rho*S3))/(2*E*I3))
 
-    AA=np.zeros([12,12],dtype = "complex_")
+    AA=np.zeros([12,12],dtype = "complex")
 
     ex1=exp(-lambda1*L1)
     ex3=exp(-lambda3*L3)
