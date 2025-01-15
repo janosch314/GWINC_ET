@@ -326,7 +326,7 @@ Optics:
     Transmittance: 0.045
   SRM:
     Transmittance: 0.05
-    CavityLength: 100              # m, ITM to SRM distance
+    CavityLength: 151.05              # m, ITM to SRM distance
     Tunephase: 0                # SEC tuning
     LengthRMS: 1e-12
 

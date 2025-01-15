@@ -405,7 +405,7 @@ Optics:
     Transmittance: 0.026
   SRM:
     Transmittance: 0.2
-    CavityLength: 100              # m, ITM to SRM distance
+    CavityLength: 165              # m, ITM to SRM distance
     Tunephase: -0.75               # SEC tuning
     LengthRMS: 1e-12
 
@@ -422,7 +422,7 @@ Optics:
 #   OptimalOptimal = optimal squeeze angle, assuming optimal readout phase
 Squeezer:
   Type: 'Freq Dependent'
-  AmplitudedB: 10                 # SQZ amplitude [dB]
+  AmplitudedB: 15                 # SQZ amplitude [dB]
   InjectionLoss: 0.04            # power loss to sqz
   SQZAngle: 0.3      #-0.37                     # SQZ phase [radians]
   LOAngleRMS: 10e-3               # quadrature noise [radians]
@@ -430,18 +430,18 @@ Squeezer:
 
   # Parameters for frequency dependent squeezing
   FilterCavity:
-    - L: 1000                        # cavity length
+    - L: 5000                        # cavity length
       Te: 5e-6                      # end mirror trasmission
       Lrt: 15e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: -7.652542257              # detuning [Hz]
-      Ti:  0.0001380223386               # input mirror trasmission [Power]
+      fdetune: -7.652542257066045              # detuning [Hz]
+      Ti:  0.0006901116932456341               # input mirror trasmission [Power]
       Lrms : 1e-12
 
-    - L: 1000                       # cavity length
+    - L: 5000                       # cavity length
       Te: 5e-6                      # end mirror trasmission
       Lrt: 15e-6                    # round-trip loss in the cavity
       Rot: 0                        # phase rotation after cavity
-      fdetune: 19.5067922           # detuning [Hz]
-      Ti: 0.000357105                   # input mirror trasmission [Power]
+      fdetune: 19.5067922388632          # detuning [Hz]
+      Ti: 0.0017855260525627768                   # input mirror trasmission [Power]
       Lrms : 1e-12
