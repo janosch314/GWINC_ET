@@ -1,0 +1,17 @@
+name: superQK
+
+channels:  
+- conda-forge
+
+dependencies:  
+- python = 3.11  
+- jupyterlab
+- ipykernel  
+- numpy  
+- scipy  
+- matplotlib 
+- git
+- pip
+- inspiral-range
+- pip:
+    - git+https://git.ligo.org/gwinc/pygwinc.git@superQK
