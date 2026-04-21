@@ -9,7 +9,9 @@ To use this package for plotting noise budgets for Einstein Telescope one needs 
 **To pull ET model into main colab folder**:
 
 git init
+
 git remote add origin https://github.com/janosch314/GWINC_ET.git
+
 git pull origin master
 
 **To install inspiral-range**:
