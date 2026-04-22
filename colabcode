@@ -1,0 +1,77 @@
+!pip install git+https://git.ligo.org/gwinc/pygwinc.git@superQK
+
+-----------------------
+
+# Load the necessary packages
+import matplotlib.pyplot as plt
+import gwinc 
+import numpy as np
+
+import ETLF.sqz_dual_fc as computeFCParamsLF # Needed to compute FC parameters for a given detector
+import ETHF.squeezingFC as computeFCParamsHF
+
+-----------------------
+
+freq = np.logspace(0,4,3000)
+budgetLF = gwinc.load_budget('ETLF',freq=freq)  # freq defines the frequency range
+tracesLFbase = budgetLF.run()
+
+budgetHF = gwinc.load_budget('ETHF',freq=freq)  # freq defines the frequency range
+tracesHFbase = budgetHF.run()
+
+NET10 = 1/np.sqrt(1/tracesLFbase.psd + 1/tracesHFbase.psd)  # take amplitude spectral densitivy of the current budget
+
+budgetLF.ifo.Optics.SRM.Transmittance=0.14
+budgetLF.ifo.Optics.SRM.Tunephase = -0.54
+
+budgetLF.ifo.Infrastructure.Length=15000
+
+budgetLF.ifo.Optics.Curvature.ITM=10670
+budgetLF.ifo.Optics.Curvature.ETM=10670
+
+LFC = 5000
+budgetLF.ifo.Squeezer.FilterCavity[0].L = LFC 
+budgetLF.ifo.Squeezer.FilterCavity[1].L = LFC 
+budgetLF.ifo.Squeezer.AmplitudedB = 15
+FCparams = computeFCParamsLF.computeFCParams(budgetLF.ifo)
+
+budgetLF.ifo.Squeezer.FilterCavity[0] = FCparams[0]
+budgetLF.ifo.Squeezer.FilterCavity[1] = FCparams[1]
+
+tracesLF = budgetLF.run()
+
+budgetHF.ifo.Infrastructure.Length=15000
+budgetHF.ifo.Optics.SRM.CavityLength = 170
+budgetHF.ifo.Optics.SRM.Transmittance=0.033
+budgetHF.ifo.Optics.Curvature.ITM =7750
+budgetHF.ifo.Optics.Curvature.ETM =7750
+FCparams = computeFCParamsHF.computeFCParams(budgetHF.ifo)
+budgetHF.ifo.Squeezer.FilterCavity = FCparams
+tracesHF = budgetHF.run()
+
+NET15 = 1/np.sqrt(1/tracesLF.psd + 1/tracesHF.psd)  # take amplitude spectral densitivy of the current budget
+
+# Stack them as columns
+data = np.column_stack((freq, NET10, NET15))
+
+# Save to CSV
+np.savetxt("sens_baseline.csv", data, delimiter=",", header="Freq, 10km, 15km", comments="")
+
+plt.loglog(freq, NET10, lw = 3, label = '10 km')
+plt.loglog(freq, NET15, lw = 3, label = '15 km')
+
+plt.grid(which="both", c='gray', lw=0.5, alpha=0.5)
+plt.ylabel('Strain [$1 / \sqrt{\mathrm{Hz}}$]')
+plt.title('Baseline sensitivity')
+plt.ylim([1e-25, 1e-23])
+plt.legend()
+plt.xlim([1,4000])
+plt.xlabel("Frequency, Hz")
+
+
+----------------------------------------
+
+tracesLF = budgetLF.run()
+fig = gwinc.plot_budget(tracesLF)
+plt.ylabel('Strain [$1 / \sqrt{\mathrm{Hz}}$]')
+plt.ylim([5e-26, 1e-21])
